@@ -3,12 +3,14 @@ import { useState } from "react";
 // ── DATA DEFINITIONS ────────────────────────────────────────────────────────
 
 const METRICS = [
-  { id: "nss_teaching",      label: "NSS: Teaching Quality",          controllability: 72, description: "National Student Survey — teaching on my course", unit: "%", min: 60, max: 100, benchmarkLow: 78, benchmarkMid: 83, benchmarkTop: 88 },
+  { id: "nss_teaching_quality",      label: "NSS: Teaching Quality",          controllability: 72, description: "National Student Survey — teaching on my course", unit: "%", min: 60, max: 100, benchmarkLow: 78, benchmarkMid: 83, benchmarkTop: 88 },
   { id: "nss_assessment",    label: "NSS: Assessment & Feedback",     controllability: 68, description: "National Student Survey — assessment & feedback", unit: "%", min: 50, max: 100, benchmarkLow: 68, benchmarkMid: 74, benchmarkTop: 82 },
-  { id: "nss_academic",      label: "NSS: Academic Support",          controllability: 65, description: "National Student Survey — academic support", unit: "%", min: 55, max: 100, benchmarkLow: 74, benchmarkMid: 80, benchmarkTop: 87 },
   { id: "nss_overall",       label: "NSS: Overall Satisfaction",      controllability: 60, description: "National Student Survey — overall satisfaction score", unit: "%", min: 55, max: 100, benchmarkLow: 76, benchmarkMid: 82, benchmarkTop: 88 },
-  { id: "continuation",      label: "Continuation / Retention",       controllability: 70, description: "% of students continuing to next year of study", unit: "%", min: 70, max: 100, benchmarkLow: 86, benchmarkMid: 90, benchmarkTop: 95 },
-  { id: "completion",        label: "Completion Rate",                 controllability: 62, description: "% of students completing their degree", unit: "%", min: 65, max: 100, benchmarkLow: 82, benchmarkMid: 87, benchmarkTop: 93 },
+  { id: "nss_student_experience", label: "NSS: Student Experience", controllability: 60, description: "National Student Survey - student experience score", unit: "%", min: 55, max: 100, benchmarkLow: 76, benchmarkMid: 82, benchmarkTop: 88 },
+  { id: "nss_support", label: "NSS: Student Support", controllability: 60, description: "National Student Survey - student support score", unit: "%", min: 55, max: 100, benchmarkLow: 76, benchmarkMid: 82, benchmarkTop: 88 },
+  { id: "nss_teaching_excellence", label: "NSS: Teaching Excellence", controllability: 60, description: "National Student Survey - teaching excellence score", unit: "%", min: 55, max: 100, benchmarkLow: 76, benchmarkMid: 82, benchmarkTop: 88 },
+  { id: "nss_teaching_on_course", label: "NSS:Teaching on my Course", controllability: 60, description: "National Student Survey - teaching on my course score", unit: "%", min: 55, max: 100, benchmarkLow: 76, benchmarkMid: 82, benchmarkTop: 88 },
+  { id: "continuation",      label: "Continuation / Completion",       controllability: 70, description: "% of students continuing to next year of study", unit: "%", min: 70, max: 100, benchmarkLow: 86, benchmarkMid: 90, benchmarkTop: 95 },
   { id: "graduate_outcomes", label: "Graduate Outcomes (Employment)",  controllability: 55, description: "% in highly skilled employment or further study 15 months after graduation (HESA)", unit: "%", min: 55, max: 100, benchmarkLow: 68, benchmarkMid: 75, benchmarkTop: 84 },
   { id: "entry_tariff",      label: "Entry Tariff",                   controllability: 45, description: "Average UCAS tariff points of new entrants", unit: "pts", min: 80, max: 220, benchmarkLow: 115, benchmarkMid: 140, benchmarkTop: 175 },
   { id: "staff_student",     label: "Staff–Student Ratio",            controllability: 58, description: "Students per academic FTE (lower = better)", unit: ":1", min: 8, max: 35, benchmarkLow: 20, benchmarkMid: 16, benchmarkTop: 12, lowerIsBetter: true },
@@ -17,21 +19,27 @@ const METRICS = [
   { id: "research_quality",  label: "Research Quality (REF)",         controllability: 40, description: "GPA-weighted REF output/impact/environment scores (max 4.0)", unit: "GPA", min: 1.0, max: 4.0, benchmarkLow: 2.4, benchmarkMid: 2.8, benchmarkTop: 3.3 },
   { id: "research_intensity",label: "Research Intensity",             controllability: 38, description: "Proportion of staff submitted to REF (%)", unit: "%", min: 10, max: 100, benchmarkLow: 45, benchmarkMid: 62, benchmarkTop: 80 },
   { id: "degree_classification", label: "Good Honours Rate",          controllability: 42, description: "% of graduates achieving 1st or 2:1", unit: "%", min: 50, max: 100, benchmarkLow: 72, benchmarkMid: 78, benchmarkTop: 85 },
-  { id: "student_satisfaction_services", label: "Student Experience (dailymail)", controllability: 63, description: "Student-generated ratings across experience dimensions (out of 5)", unit: "/5", min: 1, max: 5, benchmarkLow: 3.6, benchmarkMid: 4.0, benchmarkTop: 4.5 },
+  { id: "research_income", label: "Research Income", controllability: 40, description: "Per capita measure of research grants and contracts", unit: "£", min: 200, max: 3000, benchmarkLow: 800, benchmarkMid: 1200, benchmarkTop: 2000 },
+  { id: "graduate_on_track", label: "Graduate Prospects on Track", controllability: 50, description: "Measure of how many students felt their career is on track", unit: "pts", min: 80, max: 220, benchmarkLow: 115, benchmarkMid: 140, benchmarkTop: 175 },
+  { id: "graduate_salaries", label: "Graduate Salaries", controllability: 20, description: "median salary of first-degree, UK-domiciled graduates in full-time paid UK employment", unit: "£", min: 200, max: 3000, benchmarkLow: 800, benchmarkMid: 1200, benchmarkTop: 2000 },
+  { id: "academic_services_spend", label: "Academic Services Spend", controllability: 90, description: "how much a university spends on library and computing facilities per student FTE", unit: "£", min: 200, max: 3000, benchmarkLow: 800, benchmarkMid: 1200, benchmarkTop: 2000 },
+  { id: "first_generation", label: "First Generation Students", controllability: 40, description: "The proportion of UK-domiciled undergraduate students whose parents did not attend university", unit: "%", min: 10, max: 100, benchmarkLow: 45, benchmarkMid: 62, benchmarkTop: 80 },
+  { id: "value_added", label: "Value Added Score", controllability: 65, description: "Tracks student from enrolment to graduation and how a university supports its students towards good grades", unit: "pts", min: 80, max: 220, benchmarkLow: 115, benchmarkMid: 140, benchmarkTop: 175 },
+  { id: "people_planet", label: "People & Planet Score", controllability: 60, description: "Score derived from the sustainability ranking People & Planet", unit: "pts", min: 80, max: 220, benchmarkLow: 115, benchmarkMid: 140, benchmarkTop: 175 }
 ];
 
 const TABLES = [
   { id: "guardian", label: "Guardian",              shortLabel: "Guard.",   color: "#005689" },
   { id: "times",    label: "Times / Sunday Times",  shortLabel: "Times",    color: "#c8102e" },
   { id: "cug",      label: "Complete University Guide", shortLabel: "CUG",  color: "#2d6a4f" },
-  { id: "dailymail",  label: "Daily Mail",               shortLabel: "Daily Mail",  color: "#7b2d8b" },
+  { id: "dailymail",  label: "Daily Mail",               shortLabel: "Daily",  color: "#7b2d8b" },
 ];
 
 const WEIGHTS = {
-  guardian: { nss_teaching: 22, nss_assessment: 0, nss_academic: 0, nss_overall: 0, continuation: 15, completion: 0, graduate_outcomes: 13, entry_tariff: 15, staff_student: 15, spend_per_student: 5, facilities_spend: 0, research_quality: 0, research_intensity: 0, degree_classification: 14, student_satisfaction_services: 0 },
-  times:    { nss_teaching: 8, nss_assessment: 8, nss_academic: 0, nss_overall: 0, continuation: 8, completion: 8, graduate_outcomes: 16, entry_tariff: 16, staff_student: 8, spend_per_student: 8, facilities_spend: 0, research_quality: 8, research_intensity: 0, degree_classification: 8, student_satisfaction_services: 0 },
-  cug:      { nss_teaching: 0, nss_assessment: 0, nss_academic: 0, nss_overall: 14, continuation: 14, completion: 0, graduate_outcomes: 14, entry_tariff: 14, staff_student: 14, spend_per_student: 7, facilities_spend: 7, research_quality: 14, research_intensity: 0, degree_classification: 0, student_satisfaction_services: 0 },
-  dailymail:  { nss_teaching: 0, nss_assessment: 0, nss_academic: 0, nss_overall: 0, continuation: 0, completion: 0, graduate_outcomes: 0, entry_tariff: 0, staff_student: 0, spend_per_student: 0, facilities_spend: 0, research_quality: 0, research_intensity: 0, degree_classification: 0, student_satisfaction_services: 100 },
+  guardian:   { nss_teaching_quality: 0,  nss_assessment: 10, nss_overall: 0,  nss_student_experience: 0, nss_support: 0,  nss_teaching_excellence: 0,  nss_teaching_on_course: 10, continuation: 15, graduate_outcomes: 15, entry_tariff: 15, staff_student: 15, spend_per_student: 5, facilities_spend: 0, research_quality: 0,  research_intensity: 0, degree_classification: 0,  research_income: 0, graduate_on_track: 0, graduate_salaries: 0, academic_services_spend: 0, first_generation: 0, value_added: 15, people_planet: 0},
+  times:      { nss_teaching_quality: 13, nss_assessment: 0,  nss_overall: 0,  nss_student_experience: 6, nss_support: 0,  nss_teaching_excellence: 0,  nss_teaching_on_course: 0,  continuation: 13, graduate_outcomes: 19, entry_tariff: 13, staff_student: 0,  spend_per_student: 0, facilities_spend: 0, research_quality: 19, research_intensity: 0, degree_classification: 13, research_income: 0, graduate_on_track: 0, graduate_salaries: 0, academic_services_spend: 0, first_generation: 0, value_added: 0,  people_planet: 6},
+  cug:        { nss_teaching_quality: 0,  nss_assessment: 0,  nss_overall: 19, nss_student_experience: 0, nss_support: 0,  nss_teaching_excellence: 0,  nss_teaching_on_course: 0,  continuation: 13, graduate_outcomes: 8,  entry_tariff: 13, staff_student: 13, spend_per_student: 0, facilities_spend: 6, research_quality: 13, research_intensity: 6, degree_classification: 0,  research_income: 0, graduate_on_track: 4, graduate_salaries: 0, academic_services_spend: 6, first_generation: 0, value_added: 0,  people_planet: 0},
+  dailymail:  { nss_teaching_quality: 0,  nss_assessment: 0,  nss_overall: 0,  nss_student_experience: 5, nss_support: 10, nss_teaching_excellence: 10, nss_teaching_on_course: 0,  continuation: 5,  graduate_outcomes: 15, entry_tariff: 5,  staff_student: 0,  spend_per_student: 0, facilities_spend: 0, research_quality: 10, research_intensity: 0, degree_classification: 10, research_income: 5, graduate_on_track: 5, graduate_salaries: 5, academic_services_spend: 0, first_generation: 10, value_added: 0, people_planet: 0},
 };
 
 const CONTROLLABILITY_BANDS = [
@@ -177,7 +185,7 @@ export default function App() {
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "#c8a96e", marginBottom: 8 }}>Strategic Intelligence Tool</div>
           <h1 style={{ margin: 0, fontSize: 26, fontWeight: 700, letterSpacing: -0.5 }}>UK University League Table Navigator</h1>
-          <p style={{ margin: "8px 0 0", fontSize: 14, color: "#b0afc4", lineHeight: 1.5 }}>Understand the levers that drive rankings across Guardian, Times, CUG & dailymail — and where to focus institutional effort</p>
+          <p style={{ margin: "8px 0 0", fontSize: 14, color: "#b0afc4", lineHeight: 1.5 }}>Understand the levers that drive rankings across Guardian, Times, CUG & Daily Mail — and where to focus institutional effort</p>
         </div>
       </div>
 
@@ -729,7 +737,7 @@ export default function App() {
       {/* Footer */}
       <div style={{ borderTop: "1px solid #e2e0d8", padding: "20px 40px", marginTop: 40, background: "#fff" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", fontSize: 12, color: "#9ca3af", lineHeight: 1.6 }}>
-          <strong>Note:</strong> Weightings are approximate, based on publicly available methodology statements for Guardian University Guide, Times Good University Guide, Complete University Guide, and dailymail. Sector benchmark quartiles are indicative for the UK HE sector and should be validated against current HESA / OfS data. Normalised scores indicate relative positioning only. This tool is for strategic planning purposes.
+          <strong>Note:</strong> Weightings are approximate, based on publicly available methodology statements for Guardian University Guide, Times Good University Guide, Complete University Guide, and Daily Mail. Sector benchmark quartiles are indicative for the UK HE sector and should be validated against current HESA / OfS data. Normalised scores indicate relative positioning only. This tool is for strategic planning purposes.
         </div>
       </div>
     </div>
