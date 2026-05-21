@@ -323,8 +323,8 @@ export default function App() {
                 {METRICS.map(m => {
                   const tableCount = TABLES.filter(t => (WEIGHTS[t.id][m.id] || 0) > 0).length;
                   const avgW = tableCount > 0 ? TABLES.reduce((s, t) => s + (WEIGHTS[t.id][m.id] || 0), 0) / tableCount : 0;
-                  const xPct = ((m.controllability - 35) / 45) * 85 + 5;
-                  const yPct = 90 - ((avgW / 22) * 85);
+                  const xPct = ((m.controllability - 35) / 45) * 75 + 10;
+                  const yPct = 90 - ((avgW / 22) * 80);
                   const r = 18 + tableCount * 6;
                   const band = getBand(m.controllability);
                   const gapInfo = dataEntered ? getGapLabel(m, perfData[m.id]) : null;
