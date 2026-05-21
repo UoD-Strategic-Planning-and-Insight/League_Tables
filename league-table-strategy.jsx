@@ -400,7 +400,9 @@ export default function App() {
                   <div key={m.id} style={{ background: "#fff", border: `1px solid ${gapInfo ? gapInfo.color + "66" : "#e2e0d8"}`, borderRadius: 10, padding: "16px 18px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
                       <div>
-                        <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>{m.label}</div>
+                        <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>
+                          {m.label}{m.sourceused ? ` (${m.sourceused})` : ""}
+                        </div>
                         <div style={{ fontSize: 11, color: "#6b6880" }}>{m.description}</div>
                       </div>
                       {gapInfo && <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 99, background: gapInfo.bg, color: gapInfo.color, fontWeight: 700, flexShrink: 0, marginLeft: 8 }}>{gapInfo.label}</span>}
