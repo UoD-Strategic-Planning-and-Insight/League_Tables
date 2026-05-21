@@ -38,7 +38,7 @@ const TABLES = [
 
 const WEIGHTS = {
   qs: {
-    academic_reputation: 30, employer_reputation: 15, citations_per_faculty: 20,
+    academic_reputation: 35, employer_reputation: 15, citations_per_faculty: 20,
     faculty_student_ratio: 10, employment_outcomes: 5, international_students: 5,
     international_research_network: 5, international_faculty: 5, intl_student_diversity: 0, sustainability: 5,
     teaching_reputation: 0, doctorate_bachelor_ratio: 0, doctorate_staff_ratio: 0,
