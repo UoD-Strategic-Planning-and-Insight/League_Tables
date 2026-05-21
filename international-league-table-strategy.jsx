@@ -38,7 +38,7 @@ const TABLES = [
 
 const WEIGHTS = {
   qs: {
-    academic_reputation: 35, employer_reputation: 15, citations_per_faculty: 20,
+    academic_reputation: 30, employer_reputation: 15, citations_per_faculty: 20,
     faculty_student_ratio: 10, employment_outcomes: 5, international_students: 5,
     international_research_network: 5, international_faculty: 5, intl_student_diversity: 0, sustainability: 5,
     teaching_reputation: 0, doctorate_bachelor_ratio: 0, doctorate_staff_ratio: 0,
@@ -165,8 +165,17 @@ export default function App() {
   const [view, setView] = useState("matrix");
   const [selectedMetric, setSelectedMetric] = useState(null);
   const [hoveredMetric, setHoveredMetric] = useState(null);
-  const [perfData, setPerfData] = useState(() => Object.fromEntries(METRICS.map(m => [m.id, ""])));
-  const [dataEntered, setDataEntered] = useState(false);
+  const DUNDEE_QS = {
+    academic_reputation: 25.5, employer_reputation: 21.3, citations_per_faculty: 20.6,
+    faculty_student_ratio: 44.8, employment_outcomes: 13.9, international_students: 84.4,
+    international_research_network: 78.7, international_faculty: 92, intl_student_diversity: 85.8,
+    sustainability: 78.6,
+  };
+  const [perfData, setPerfData] = useState(() => ({
+    ...Object.fromEntries(METRICS.map(m => [m.id, ""])),
+    ...DUNDEE_QS,
+  }));
+  const [dataEntered, setDataEntered] = useState(true);
 
   const metric = selectedMetric ? METRICS.find(m => m.id === selectedMetric) : null;
   const sortedByPriority = [...METRICS].sort((a, b) => getPriority(b.id, b.controllability) - getPriority(a.id, a.controllability));
