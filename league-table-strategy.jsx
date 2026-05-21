@@ -323,8 +323,12 @@ export default function App() {
                 {METRICS.map(m => {
                   const tableCount = TABLES.filter(t => (WEIGHTS[t.id][m.id] || 0) > 0).length;
                   const avgW = tableCount > 0 ? TABLES.reduce((s, t) => s + (WEIGHTS[t.id][m.id] || 0), 0) / tableCount : 0;
-                  const xPct = ((m.controllability - 35) / 45) * 75 + 10;
-                  const yPct = 90 - ((avgW / 22) * 80);
+                  const paddingX = 6; // percent horizontal padding to keep bubbles inside
+                  const paddingY = 6; // percent vertical padding to keep bubbles inside
+                  const ctrl = Math.max(0, Math.min(100, m.controllability));
+                  const xPct = paddingX + (ctrl / 100) * (100 - 2 * paddingX);
+                  const maxAvgW = 22; // maximum possible avg weight used for scaling
+                  const yPct = paddingY + (1 - Math.min(maxAvgW, avgW) / maxAvgW) * (100 - 2 * paddingY);
                   const r = 18 + tableCount * 6;
                   const band = getBand(m.controllability);
                   const gapInfo = dataEntered ? getGapLabel(m, perfData[m.id]) : null;
