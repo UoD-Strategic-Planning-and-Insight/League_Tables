@@ -3,42 +3,60 @@ import { useState } from "react";
 // ── DATA DEFINITIONS ────────────────────────────────────────────────────────
 
 const METRICS = [
-  { id: "reputation",      label: "reputation",          controllability: 72, description: "National Student Survey — teaching quality", unit: "%", min: 60, max: 100, benchmarkLow: 72, benchmarkMid: 84.55, benchmarkTop: 92.2, sourceused: "Times" },
-  { id: "nss_assessment",    label: "NSS: Assessment & Feedback",     controllability: 78, description: "National Student Survey — assessment & feedback", unit: "%", min: 50, max: 100, benchmarkLow: 65, benchmarkMid: 81.4, benchmarkTop: 92.6, sourceused: "Guardian" },
-  { id: "nss_overall",       label: "NSS: Overall Satisfaction",      controllability: 58, description: "National Student Survey — overall satisfaction score", unit: "%", min: 55, max: 100, benchmarkLow: 68, benchmarkMid: 78, benchmarkTop: 83, sourceused: "CUG" },
-  { id: "nss_student_experience", label: "NSS: Student Experience", controllability: 63, description: "National Student Survey - student experience score", unit: "%", min: 55, max: 100, benchmarkLow: 65.9, benchmarkMid: 81.1, benchmarkTop: 88.7, sourceused:"Times" },
-  { id: "nss_support", label: "NSS: Student Support", controllability: 71, description: "National Student Survey - student support score", unit: "%", min: 55, max: 100, benchmarkLow: 70.1, benchmarkMid: 82.7, benchmarkTop: 91.4, sourceused: "DailyMail" },
-  { id: "nss_teaching_excellence", label: "NSS: Teaching Excellence", controllability: 73, description: "National Student Survey - teaching excellence score", unit: "%", min: 55, max: 100, benchmarkLow: 72.4, benchmarkMid: 85.2, benchmarkTop: 92.5, sourceused: "DailyMail" },
-  { id: "nss_teaching_on_course", label: "NSS:Teaching on my Course", controllability: 74, description: "National Student Survey - teaching on my course score", unit: "%", min: 55, max: 100, benchmarkLow: 80.1, benchmarkMid: 82, benchmarkTop: 94, sourceused: "Guardian" },
-  { id: "continuation",      label: "Continuation / Completion",       controllability: 67, description: "% of students continuing to next year of study", unit: "%", min: 70, max: 100, benchmarkLow: 75.9, benchmarkMid: 89.2, benchmarkTop: 98.4, sourceused: "Guardian" },
-  { id: "graduate_outcomes", label: "Graduate Outcomes (Employment)",  controllability: 47, description: "% in highly skilled employment or further study 15 months after graduation (HESA)", unit: "%", min: 55, max: 100, benchmarkLow: 67, benchmarkMid: 79, benchmarkTop: 95, sourceused: "Guardian" },
-  { id: "entry_tariff",      label: "Entry Tariff",                   controllability: 56, description: "Average UCAS tariff points of new entrants", unit: "pts", min: 80, max: 220, benchmarkLow: 93, benchmarkMid: 123, benchmarkTop: 210, sourceused: "Guardian" },
-  { id: "staff_student",     label: "Staff–Student Ratio",            controllability: 72, description: "Students per academic FTE (lower = better)", unit: ":1", min: 8, max: 35, benchmarkLow: 23, benchmarkMid: 15.1, benchmarkTop: 9.1, lowerIsBetter: true, sourceused: "Guardian" },
-  { id: "academic_services_spend", label: "Academic Services Spend",        controllability: 84, description: "Expenditure on academic services per student (£)", unit: "pts", min: 0, max: 10, benchmarkLow: 1.7, benchmarkMid: 4.9, benchmarkTop: 10, sourceused: "Guardian" },
-  { id: "facilities_spend",  label: "Facilities Spend",               controllability: 80, description: "Expenditure on student facilities per student (£)", unit: "£", min: 200, max: 3800, benchmarkLow: 117, benchmarkMid: 691.5, benchmarkTop: 2164, sourceused: "CUG" },
-  { id: "research_quality",  label: "Research Quality (REF)",         controllability: 34, description: "GPA-weighted REF output/impact/environment scores (max 4.0)", unit: "GPA", min: 1.0, max: 4.0, benchmarkLow: 1.74, benchmarkMid: 2.99, benchmarkTop: 3.63, sourceused: "CUG" },
-  { id: "research_intensity",label: "Research Intensity",             controllability: 44, description: "Proportion of staff submitted to REF (%)", unit: "%", min: 10, max: 100, benchmarkLow: 10, benchmarkMid: 45.5, benchmarkTop: 100, sourceused: "CUG" },
-  { id: "degree_classification", label: "Good Honours Rate",          controllability: 52, description: "% of graduates achieving 1st or 2:1", unit: "%", min: 50, max: 100, benchmarkLow: 54, benchmarkMid: 75.6, benchmarkTop: 93, sourceused: "Times" },
-  { id: "research_income", label: "Research Income", controllability: 39, description: "Per capita measure of research grants and contracts", unit: "£", min: 0, max: 120000, benchmarkLow: 0, benchmarkMid: 14637, benchmarkTop: 111032, sourceused: "DailyMail" }, 
-  { id: "graduate_on_track", label: "Graduate Prospects on Track", controllability: 50, description: "Measure of how many students felt their career is on track", unit: "%", min: 0, max: 100, benchmarkLow: 62.3, benchmarkMid: 75.7, benchmarkTop: 86.9, sourceused: "CUG" },
-  { id: "graduate_salaries", label: "Graduate Salaries", controllability: 18, description: "median salary of first-degree, UK-domiciled graduates in full-time paid UK employment", unit: "£", min: 20000, max: 40000, benchmarkLow: 22000, benchmarkMid: 27500, benchmarkTop: 37000, sourceused: "DailyMail" },
-  { id: "first_generation", label: "First Generation Students", controllability: 28, description: "The proportion of UK-domiciled undergraduate students whose parents did not attend university", unit: "%", min: 10, max: 100, benchmarkLow: 15.7, benchmarkMid: 43, benchmarkTop: 73.6, sourceused: "DailyMail" },
-  { id: "value_added", label: "Value Added Score", controllability: 61, description: "Tracks student from enrolment to graduation and how a university supports its students towards good grades", unit: "pts", min: 0, max: 10, benchmarkLow: 2, benchmarkMid: 5.4, benchmarkTop: 8, sourceused: "CUG" },
-  { id: "people_planet", label: "People & Planet Score", controllability: 69, description: "Score derived from the sustainability ranking People & Planet", unit: "pts", min: 10, max: 100, benchmarkLow: 10.5, benchmarkMid: 50.6, benchmarkTop: 80.7, sourceused: "Times" }
+  // ── QS World University Ranking Metrics ──
+  { id: "academic_reputation",            label: "Academic Reputation",              controllability: 20, description: "Global academic peer survey — perceived research and teaching excellence", unit: "score", min: 0, max: 100, benchmarkLow: 15, benchmarkMid: 30, benchmarkTop: 60, sourceused: "QS" },
+  { id: "employer_reputation",            label: "Employer Reputation",              controllability: 38, description: "Global employer survey — perceived graduate employability and quality", unit: "score", min: 0, max: 100, benchmarkLow: 15, benchmarkMid: 32, benchmarkTop: 65, sourceused: "QS" },
+  { id: "citations_per_faculty",          label: "Citations Per Faculty",            controllability: 32, description: "Research citation impact per academic staff member", unit: "score", min: 0, max: 100, benchmarkLow: 15, benchmarkMid: 35, benchmarkTop: 70, sourceused: "QS" },
+  { id: "faculty_student_ratio",          label: "Faculty Student Ratio",            controllability: 70, description: "Number of students per academic faculty member (lower is better)", unit: ":1", min: 4, max: 50, benchmarkLow: 32, benchmarkMid: 18, benchmarkTop: 9, lowerIsBetter: true, sourceused: "QS & THE" },
+  { id: "employment_outcomes",            label: "Employment Outcomes",              controllability: 52, description: "Graduate employment and career outcome performance measure", unit: "%", min: 50, max: 100, benchmarkLow: 65, benchmarkMid: 78, benchmarkTop: 92, sourceused: "QS" },
+  { id: "international_students",         label: "International Student Ratio",      controllability: 72, description: "Proportion of international students enrolled", unit: "%", min: 0, max: 65, benchmarkLow: 8, benchmarkMid: 22, benchmarkTop: 42, sourceused: "QS & THE" },
+  { id: "international_research_network", label: "International Research Network",   controllability: 55, description: "Breadth and volume of international research collaboration and partnerships", unit: "score", min: 0, max: 100, benchmarkLow: 20, benchmarkMid: 48, benchmarkTop: 80, sourceused: "QS" },
+  { id: "international_faculty",          label: "International Faculty Ratio",      controllability: 65, description: "Proportion of academic staff who are international", unit: "%", min: 0, max: 80, benchmarkLow: 8, benchmarkMid: 22, benchmarkTop: 50, sourceused: "QS & THE" },
+  { id: "intl_student_diversity",         label: "International Student Diversity",  controllability: 65, description: "Diversity of nationalities among the international student body (currently 0% weight in QS)", unit: "score", min: 0, max: 100, benchmarkLow: 10, benchmarkMid: 30, benchmarkTop: 60, sourceused: "QS" },
+  { id: "sustainability",                 label: "Sustainability",                   controllability: 75, description: "Environmental, social and governance sustainability performance", unit: "score", min: 0, max: 100, benchmarkLow: 30, benchmarkMid: 55, benchmarkTop: 78, sourceused: "QS" },
+  // ── Times Higher Education World Ranking Metrics ──
+  { id: "teaching_reputation",            label: "Teaching Reputation",              controllability: 25, description: "Global academic peer survey component — perceived teaching quality", unit: "score", min: 0, max: 100, benchmarkLow: 12, benchmarkMid: 30, benchmarkTop: 65, sourceused: "THE" },
+  { id: "doctorate_bachelor_ratio",       label: "Doctorate–Bachelor Ratio",         controllability: 55, description: "Ratio of doctoral degrees awarded to bachelor degrees awarded", unit: "%", min: 0, max: 100, benchmarkLow: 8, benchmarkMid: 25, benchmarkTop: 55, sourceused: "THE" },
+  { id: "doctorate_staff_ratio",          label: "Doctorate–Staff Ratio",            controllability: 50, description: "Proportion of academic staff holding doctoral qualifications", unit: "%", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 42, benchmarkTop: 82, sourceused: "THE" },
+  { id: "institutional_income",           label: "Institutional Income",             controllability: 48, description: "Institutional income per academic staff member (normalised score)", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 42, benchmarkTop: 78, sourceused: "THE" },
+  { id: "research_reputation",            label: "Research Reputation",              controllability: 22, description: "Global academic peer survey component — perceived research quality", unit: "score", min: 0, max: 100, benchmarkLow: 12, benchmarkMid: 32, benchmarkTop: 72, sourceused: "THE" },
+  { id: "research_income",                label: "Research Income",                  controllability: 48, description: "Research income from industry, grants and other sources (normalised score)", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 40, benchmarkTop: 75, sourceused: "THE" },
+  { id: "research_productivity",          label: "Research Productivity",            controllability: 42, description: "Volume of research papers published per academic staff member", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 42, benchmarkTop: 78, sourceused: "THE" },
+  { id: "citation_impact",                label: "Citation Impact",                  controllability: 35, description: "Normalised average citations per paper (field-weighted impact)", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 40, benchmarkTop: 75, sourceused: "THE" },
+  { id: "research_strength",              label: "Research Strength",                controllability: 40, description: "Volume-weighted measure of research output and impact", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 42, benchmarkTop: 78, sourceused: "THE" },
+  { id: "research_excellence",            label: "Research Excellence",              controllability: 38, description: "Proportion of outputs with above-average field-normalised citation impact", unit: "score", min: 0, max: 100, benchmarkLow: 15, benchmarkMid: 38, benchmarkTop: 74, sourceused: "THE" },
+  { id: "research_influence",             label: "Research Influence",               controllability: 34, description: "Proportion of papers cited by high-impact research globally", unit: "score", min: 0, max: 100, benchmarkLow: 12, benchmarkMid: 35, benchmarkTop: 72, sourceused: "THE" },
+  { id: "industry_income",                label: "Industry Income",                  controllability: 62, description: "Income from industry partnerships and commercial research activity (normalised)", unit: "score", min: 0, max: 100, benchmarkLow: 15, benchmarkMid: 38, benchmarkTop: 74, sourceused: "THE" },
+  { id: "patents",                        label: "Patents",                          controllability: 38, description: "Innovation output — number of patents filed and patent citations", unit: "score", min: 0, max: 100, benchmarkLow: 8, benchmarkMid: 28, benchmarkTop: 62, sourceused: "THE" },
+  { id: "international_co_authorship",    label: "International Co-Authorship",      controllability: 55, description: "Proportion of research papers with at least one international co-author", unit: "%", min: 15, max: 100, benchmarkLow: 28, benchmarkMid: 50, benchmarkTop: 74, sourceused: "THE" }
 ];
 
 const TABLES = [
-  { id: "guardian", label: "Guardian",              shortLabel: "Guard.",   color: "#005689" },
-  { id: "times",    label: "Times / Sunday Times",  shortLabel: "Times",    color: "#c8102e" },
-  { id: "cug",      label: "Complete University Guide", shortLabel: "CUG",  color: "#2d6a4f" },
-  { id: "dailymail",  label: "Daily Mail",               shortLabel: "Daily",  color: "#7b2d8b" },
+  { id: "qs",  label: "QS World University Ranking",    shortLabel: "QS",  color: "#562891" },
+  { id: "the", label: "Times Higher Education Ranking", shortLabel: "THE", color: "#0c3476" },
 ];
 
 const WEIGHTS = {
-  guardian:   { reputation: 0,  nss_assessment: 10, nss_overall: 0,  nss_student_experience: 0, nss_support: 0,  nss_teaching_excellence: 0,  nss_teaching_on_course: 10, continuation: 15, graduate_outcomes: 15, entry_tariff: 15, staff_student: 15, facilities_spend: 0, research_quality: 0,  research_intensity: 0, degree_classification: 0,  research_income: 0, graduate_on_track: 0, graduate_salaries: 0, academic_services_spend: 0, first_generation: 0, value_added: 15, people_planet: 0},
-  times:      { reputation: 13, nss_assessment: 0,  nss_overall: 0,  nss_student_experience: 6, nss_support: 0,  nss_teaching_excellence: 0,  nss_teaching_on_course: 0,  continuation: 13, graduate_outcomes: 19, entry_tariff: 13, staff_student: 0,  facilities_spend: 0, research_quality: 19, research_intensity: 0, degree_classification: 13, research_income: 0, graduate_on_track: 0, graduate_salaries: 0, academic_services_spend: 0, first_generation: 0, value_added: 0,  people_planet: 6},
-  cug:        { reputation: 0,  nss_assessment: 0,  nss_overall: 19, nss_student_experience: 0, nss_support: 0,  nss_teaching_excellence: 0,  nss_teaching_on_course: 0,  continuation: 13, graduate_outcomes: 8,  entry_tariff: 13, staff_student: 13, facilities_spend: 6, research_quality: 13, research_intensity: 6, degree_classification: 0,  research_income: 0, graduate_on_track: 4, graduate_salaries: 0, academic_services_spend: 6, first_generation: 0, value_added: 0,  people_planet: 0},
-  dailymail:  { reputation: 0,  nss_assessment: 0,  nss_overall: 0,  nss_student_experience: 5, nss_support: 10, nss_teaching_excellence: 10, nss_teaching_on_course: 0,  continuation: 5,  graduate_outcomes: 15, entry_tariff: 5,  staff_student: 0,  facilities_spend: 0, research_quality: 10, research_intensity: 0, degree_classification: 10, research_income: 5, graduate_on_track: 5, graduate_salaries: 5, academic_services_spend: 0, first_generation: 10, value_added: 0, people_planet: 0},
+  qs: {
+    academic_reputation: 30, employer_reputation: 15, citations_per_faculty: 20,
+    faculty_student_ratio: 10, employment_outcomes: 5, international_students: 5,
+    international_research_network: 5, international_faculty: 5, intl_student_diversity: 0, sustainability: 5,
+    teaching_reputation: 0, doctorate_bachelor_ratio: 0, doctorate_staff_ratio: 0,
+    institutional_income: 0, research_reputation: 0, research_income: 0,
+    research_productivity: 0, citation_impact: 0, research_strength: 0,
+    research_excellence: 0, research_influence: 0, industry_income: 0,
+    patents: 0, international_co_authorship: 0,
+  },
+  the: {
+    academic_reputation: 0, employer_reputation: 0, citations_per_faculty: 0,
+    faculty_student_ratio: 4.5, employment_outcomes: 0, international_students: 2.5,
+    international_research_network: 0, international_faculty: 2.5, intl_student_diversity: 0, sustainability: 0,
+    teaching_reputation: 15, doctorate_bachelor_ratio: 2, doctorate_staff_ratio: 5.5,
+    institutional_income: 2.5, research_reputation: 18, research_income: 5.5,
+    research_productivity: 5.5, citation_impact: 15, research_strength: 5,
+    research_excellence: 5, research_influence: 5, industry_income: 2,
+    patents: 2, international_co_authorship: 2.5,
+  },
 };
 
 const CONTROLLABILITY_BANDS = [
@@ -147,8 +165,17 @@ export default function App() {
   const [view, setView] = useState("matrix");
   const [selectedMetric, setSelectedMetric] = useState(null);
   const [hoveredMetric, setHoveredMetric] = useState(null);
-  const [perfData, setPerfData] = useState(() => Object.fromEntries(METRICS.map(m => [m.id, ""])));
-  const [dataEntered, setDataEntered] = useState(false);
+  const DUNDEE_QS = {
+    academic_reputation: 25.5, employer_reputation: 21.3, citations_per_faculty: 20.6,
+    faculty_student_ratio: 44.8, employment_outcomes: 13.9, international_students: 84.4,
+    international_research_network: 78.7, international_faculty: 92, intl_student_diversity: 85.8,
+    sustainability: 78.6,
+  };
+  const [perfData, setPerfData] = useState(() => ({
+    ...Object.fromEntries(METRICS.map(m => [m.id, ""])),
+    ...DUNDEE_QS,
+  }));
+  const [dataEntered, setDataEntered] = useState(true);
 
   const metric = selectedMetric ? METRICS.find(m => m.id === selectedMetric) : null;
   const sortedByPriority = [...METRICS].sort((a, b) => getPriority(b.id, b.controllability) - getPriority(a.id, a.controllability));
@@ -182,9 +209,14 @@ export default function App() {
       {/* ── HEADER ── */}
       <div style={{ background: "#1a1a2e", color: "#f8f7f4", padding: "28px 40px 24px", borderBottom: "4px solid #c8a96e" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "#c8a96e", marginBottom: 8 }}>Strategic Intelligence Tool</div>
-          <h1 style={{ margin: 0, fontSize: 26, fontWeight: 700, letterSpacing: -0.5 }}>UK University League Table Navigator</h1>
-          <p style={{ margin: "8px 0 0", fontSize: 14, color: "#b0afc4", lineHeight: 1.5 }}>Understand the levers that drive rankings across Guardian, Times, CUG & Daily Mail — and where to focus institutional effort</p>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <div>
+              <div style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "#c8a96e", marginBottom: 8 }}>Strategic Intelligence Tool</div>
+              <h1 style={{ margin: 0, fontSize: 26, fontWeight: 700, letterSpacing: -0.5 }}>International University League Table Navigator</h1>
+              <p style={{ margin: "8px 0 0", fontSize: 14, color: "#b0afc4", lineHeight: 1.5 }}>Understand the levers that drive world rankings across QS World University Rankings & Times Higher Education — and where to focus institutional effort</p>
+            </div>
+            <a href="/League_Tables/" style={{ marginTop: 4, padding: "6px 14px", background: "rgba(200,169,110,0.15)", border: "1px solid #c8a96e", borderRadius: 20, color: "#c8a96e", fontSize: 12, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>&#8592; UK Rankings</a>
+          </div>
         </div>
       </div>
 
@@ -318,8 +350,8 @@ export default function App() {
                 {METRICS.map(m => {
                   const tableCount = TABLES.filter(t => (WEIGHTS[t.id][m.id] || 0) > 0).length;
                   const avgW = tableCount > 0 ? TABLES.reduce((s, t) => s + (WEIGHTS[t.id][m.id] || 0), 0) / tableCount : 0;
-                  const xPct = ((m.controllability - 35) / 45) * 85 + 5;
-                  const yPct = 90 - ((avgW / 22) * 85);
+                  const xPct = ((m.controllability - 15) / 65) * 85 + 5;
+                  const yPct = 90 - ((avgW / 30) * 85);
                   const r = 18 + tableCount * 6;
                   const band = getBand(m.controllability);
                   const gapInfo = dataEntered ? getGapLabel(m, perfData[m.id]) : null;
@@ -388,7 +420,7 @@ export default function App() {
             <div style={S.section}>
               <h2 style={{ margin: "0 0 8px", fontSize: 20 }}>Enter Your Institution's Performance Data</h2>
               <p style={{ margin: 0, fontSize: 14, color: "#6b6880", lineHeight: 1.6 }}>
-                Enter your most recent published figures. Leave blank if data is unavailable — the tool will work with partial data. Values are benchmarked against indicative sector quartiles for the Scottish / UK HE sector.
+                Enter your most recent published figures. Leave blank if data is unavailable — the tool will work with partial data. Values are benchmarked against indicative quartiles for global top-500 institutions.
               </p>
             </div>
 
@@ -462,7 +494,7 @@ export default function App() {
             ) : (
               <>
                 {/* Table score cards */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 32 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14, marginBottom: 32 }}>
                   {TABLES.map(t => {
                     const score = tableScore(t.id, perfData);
                     const benchScore = tableScore(t.id, Object.fromEntries(METRICS.map(m => [m.id, m.benchmarkMid])));
@@ -693,7 +725,7 @@ export default function App() {
                               <span style={{ fontWeight: 700, color: w > 0 ? "#1a1a2e" : "#9ca3af" }}>{w > 0 ? `${w}% of overall score` : "Not included"}</span>
                             </div>
                             <div style={{ height: 10, background: "#f0ede6", borderRadius: 99, overflow: "hidden" }}>
-                              <div style={{ height: "100%", width: `${(w / 22) * 100}%`, background: w > 0 ? t.color : "transparent", borderRadius: 99 }} />
+                              <div style={{ height: "100%", width: `${(w / 30) * 100}%`, background: w > 0 ? t.color : "transparent", borderRadius: 99 }} />
                             </div>
                           </div>
                         );
@@ -704,13 +736,12 @@ export default function App() {
                     <div style={{ background: "#f8f7f4", borderRadius: 10, padding: "18px 20px", borderLeft: "4px solid #c8a96e" }}>
                       <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: "#c8a96e", marginBottom: 8 }}>Strategic Guidance</div>
                       <div style={{ fontSize: 14, color: "#3d3b52", lineHeight: 1.7 }}>
-                        {impacts.length === 0 && "This metric does not feature in any of the major tables tracked here. Investment in this area will not directly influence rankings."}
-                        {impacts.length >= 3 && metric.controllability >= 65 && <span><strong>High-priority lever.</strong> This metric appears across {impacts.length} tables and sits firmly within institutional control. A sustained improvement programme will yield broad ranking benefits. Establish a dedicated workstream with clear ownership and 12-month milestones.</span>}
-                        {impacts.length >= 3 && metric.controllability < 65 && metric.controllability >= 45 && <span><strong>Monitor and invest strategically.</strong> Cross-table breadth is strong ({impacts.length} tables), but controllability is moderate — improvement requires multi-year commitment. Build pipeline interventions now; results materialise over 2–3 cycles.</span>}
-                        {impacts.length >= 3 && metric.controllability < 45 && <span><strong>Structural challenge.</strong> High cross-table importance but limited short-term controllability. Focus on root-cause analysis, sector benchmarking, and setting realistic multi-year targets rather than expecting rapid gains.</span>}
-                        {impacts.length === 2 && metric.controllability >= 60 && <span><strong>Targeted quick win.</strong> Limited to {impacts.length} tables but highly controllable. Identify which tables matter most to your recruitment strategy before committing resource.</span>}
-                        {impacts.length === 1 && <span><strong>Table-specific lever.</strong> This metric is unique to {impacts[0]?.table.label}. Prioritise only if that table is strategically important for your institution's profile.</span>}
-                        {impacts.length === 2 && metric.controllability < 60 && <span><strong>Medium-term investment.</strong> Appears in {impacts.length} tables with moderate controllability. Worth inclusion in a broader improvement programme.</span>}
+                        {impacts.length === 0 && "This metric does not currently carry weight in either QS or THE ranking methodology. Monitor for future inclusion but investment here will not directly influence either ranking."}
+                        {impacts.length === 2 && metric.controllability >= 65 && <span><strong>High-priority lever.</strong> This metric is used by both QS and THE and sits firmly within institutional control. A sustained improvement programme will yield ranking benefits across both indices. Establish a dedicated workstream with clear ownership and 12-month milestones.</span>}
+                        {impacts.length === 2 && metric.controllability < 65 && metric.controllability >= 45 && <span><strong>Monitor and invest strategically.</strong> This metric contributes to both rankings but controllability is moderate — improvement requires multi-year commitment. Build pipeline interventions now; results materialise over 2–3 publication cycles.</span>}
+                        {impacts.length === 2 && metric.controllability < 45 && <span><strong>Structural challenge.</strong> Used by both rankings but limited short-term controllability. Focus on root-cause analysis, peer benchmarking, and setting realistic multi-year targets rather than expecting rapid gains.</span>}
+                        {impacts.length === 1 && metric.controllability >= 60 && <span><strong>Targeted single-ranking lever.</strong> This metric is specific to {impacts[0]?.table.label}. Highly controllable — prioritise if that ranking is strategically important for your institution's international profile.</span>}
+                        {impacts.length === 1 && metric.controllability < 60 && <span><strong>Ranking-specific, longer-horizon lever.</strong> Unique to {impacts[0]?.table.label} and only moderately controllable. Consider as part of a broader research or internationalisation strategy rather than a quick-win intervention.</span>}
                         {gapInfo && val !== "" && (
                           <span> <br /><br /><strong>Current position:</strong> {gapInfo.label.toLowerCase()}.{" "}
                             {gapInfo.label === "Bottom quartile" && "Urgent attention recommended — this is likely dragging your composite score below sector norms."}
@@ -738,7 +769,7 @@ export default function App() {
       {/* Footer */}
       <div style={{ borderTop: "1px solid #e2e0d8", padding: "20px 40px", marginTop: 40, background: "#fff" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", fontSize: 12, color: "#9ca3af", lineHeight: 1.6 }}>
-          <strong>Note:</strong> Weightings are approximate, based on publicly available methodology statements for Guardian University Guide, Times Good University Guide, Complete University Guide, and Daily Mail. Sector benchmark quartiles are indicative for the UK HE sector and should be validated against current HESA / OfS data. Normalised scores indicate relative positioning only. This tool is for strategic planning purposes.
+          <strong>Note:</strong> Weightings are approximate, based on publicly available methodology statements for QS World University Rankings and Times Higher Education (THE) World University Rankings. Sector benchmark quartiles are indicative for global top-500 institutions and should be validated against current QS and THE published data. Normalised scores indicate relative positioning only. This tool is for strategic planning purposes.
         </div>
       </div>
     </div>
