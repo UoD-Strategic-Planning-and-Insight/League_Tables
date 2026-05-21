@@ -200,9 +200,14 @@ export default function App() {
       {/* ── HEADER ── */}
       <div style={{ background: "#1a1a2e", color: "#f8f7f4", padding: "28px 40px 24px", borderBottom: "4px solid #c8a96e" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "#c8a96e", marginBottom: 8 }}>Strategic Intelligence Tool</div>
-          <h1 style={{ margin: 0, fontSize: 26, fontWeight: 700, letterSpacing: -0.5 }}>International University League Table Navigator</h1>
-          <p style={{ margin: "8px 0 0", fontSize: 14, color: "#b0afc4", lineHeight: 1.5 }}>Understand the levers that drive world rankings across QS World University Rankings & Times Higher Education — and where to focus institutional effort</p>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <div>
+              <div style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "#c8a96e", marginBottom: 8 }}>Strategic Intelligence Tool</div>
+              <h1 style={{ margin: 0, fontSize: 26, fontWeight: 700, letterSpacing: -0.5 }}>International University League Table Navigator</h1>
+              <p style={{ margin: "8px 0 0", fontSize: 14, color: "#b0afc4", lineHeight: 1.5 }}>Understand the levers that drive world rankings across QS World University Rankings & Times Higher Education — and where to focus institutional effort</p>
+            </div>
+            <a href="/League_Tables/" style={{ marginTop: 4, padding: "6px 14px", background: "rgba(200,169,110,0.15)", border: "1px solid #c8a96e", borderRadius: 20, color: "#c8a96e", fontSize: 12, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>&#8592; UK Rankings</a>
+          </div>
         </div>
       </div>
 
