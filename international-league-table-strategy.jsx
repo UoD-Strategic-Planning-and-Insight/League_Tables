@@ -171,9 +171,26 @@ export default function App() {
     international_research_network: 78.7, international_faculty: 92, intl_student_diversity: 85.8,
     sustainability: 78.6,
   };
+  const DUNDEE_THE = {
+    teaching_reputation: 7.8,
+    doctorate_bachelor_ratio: 44.1,
+    doctorate_staff_ratio: 56.6,
+    institutional_income: 71.1,
+    research_reputation: 7.5,
+    research_income: 67.1,
+    research_productivity: 80.4,
+    citation_impact: 81.8,
+    research_strength: 83.6,
+    research_excellence: 82.3,
+    research_influence: 81.1,
+    industry_income: 74.2,
+    patents: 99.7,
+    international_co_authorship: 87.1,
+  };
   const [perfData, setPerfData] = useState(() => ({
     ...Object.fromEntries(METRICS.map(m => [m.id, ""])),
     ...DUNDEE_QS,
+    ...DUNDEE_THE,
   }));
   const [dataEntered, setDataEntered] = useState(true);
 
