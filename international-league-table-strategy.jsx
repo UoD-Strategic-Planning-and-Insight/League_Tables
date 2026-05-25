@@ -4,16 +4,26 @@ import { useState } from "react";
 
 const METRICS = [
   // ── QS World University Ranking Metrics ──
-  { id: "academic_reputation",            label: "Academic Reputation",              controllability: 20, description: "Global academic peer survey — perceived research and teaching excellence", unit: "score", min: 0, max: 100, benchmarkLow: 15, benchmarkMid: 30, benchmarkTop: 60, sourceused: "QS" },
-  { id: "employer_reputation",            label: "Employer Reputation",              controllability: 38, description: "Global employer survey — perceived graduate employability and quality", unit: "score", min: 0, max: 100, benchmarkLow: 15, benchmarkMid: 32, benchmarkTop: 65, sourceused: "QS" },
-  { id: "citations_per_faculty",          label: "Citations Per Faculty",            controllability: 32, description: "Research citation impact per academic staff member", unit: "score", min: 0, max: 100, benchmarkLow: 15, benchmarkMid: 35, benchmarkTop: 70, sourceused: "QS" },
-  { id: "faculty_student_ratio",          label: "Faculty Student Ratio",            controllability: 70, description: "Number of students per academic faculty member (lower is better)", unit: ":1", min: 4, max: 50, benchmarkLow: 32, benchmarkMid: 18, benchmarkTop: 9, lowerIsBetter: true, sourceused: "QS & THE" },
-  { id: "employment_outcomes",            label: "Employment Outcomes",              controllability: 52, description: "Graduate employment and career outcome performance measure", unit: "%", min: 50, max: 100, benchmarkLow: 65, benchmarkMid: 78, benchmarkTop: 92, sourceused: "QS" },
-  { id: "international_students",         label: "International Student Ratio",      controllability: 72, description: "Proportion of international students enrolled", unit: "%", min: 0, max: 65, benchmarkLow: 8, benchmarkMid: 22, benchmarkTop: 42, sourceused: "QS & THE" },
-  { id: "international_research_network", label: "International Research Network",   controllability: 55, description: "Breadth and volume of international research collaboration and partnerships", unit: "score", min: 0, max: 100, benchmarkLow: 20, benchmarkMid: 48, benchmarkTop: 80, sourceused: "QS" },
-  { id: "international_faculty",          label: "International Faculty Ratio",      controllability: 65, description: "Proportion of academic staff who are international", unit: "%", min: 0, max: 80, benchmarkLow: 8, benchmarkMid: 22, benchmarkTop: 50, sourceused: "QS & THE" },
-  { id: "intl_student_diversity",         label: "International Student Diversity",  controllability: 65, description: "Diversity of nationalities among the international student body (currently 0% weight in QS)", unit: "score", min: 0, max: 100, benchmarkLow: 10, benchmarkMid: 30, benchmarkTop: 60, sourceused: "QS" },
-  { id: "sustainability",                 label: "Sustainability",                   controllability: 75, description: "Environmental, social and governance sustainability performance", unit: "score", min: 0, max: 100, benchmarkLow: 30, benchmarkMid: 55, benchmarkTop: 78, sourceused: "QS" },
+  { id: "academic_reputation",            label: "Academic Reputation",              controllability: 20, description: "Global academic peer survey — perceived research and teaching excellence", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 16, benchmarkTop: 100, UKbenchmarkLow: 3.1, UKbenchmarkMid: 19.5, UKbenchmarkTop: 100, 
+sourceused: "QS" },
+  { id: "employer_reputation",            label: "Employer Reputation",              controllability: 38, description: "Global employer survey — perceived graduate employability and quality", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 16.4, benchmarkTop: 100, UKbenchmarkLow: 3.7, UKbenchmarkMid: 19.05, UKbenchmarkTop: 100, 
+ sourceused: "QS" },
+  { id: "citations_per_faculty",          label: "Citations Per Faculty",            controllability: 32, description: "Research citation impact per academic staff member", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 18.05, benchmarkTop: 100, UKbenchmarkLow: 4.4, UKbenchmarkMid: 39.3, UKbenchmarkTop: 95, 
+sourceused: "QS" },
+  { id: "faculty_student_ratio",          label: "Faculty Student Ratio",            controllability: 70, description: "Number of students per academic faculty member (lower is better)", unit: ":1", min: 4, max: 50, benchmarkLow: 1, benchmarkMid: 23.6, benchmarkTop: 100, UKbenchmarkLow: 2.6, UKbenchmarkMid: 18, UKbenchmarkTop: 100, 
+lowerIsBetter: true, sourceused: "QS & THE" },
+  { id: "employment_outcomes",            label: "Employment Outcomes",              controllability: 52, description: "Graduate employment and career outcome performance measure", unit: "%", min: 50, max: 100, benchmarkLow: 1, benchmarkMid: 17.85, benchmarkTop: 100, UKbenchmarkLow: 1, UKbenchmarkMid: 24.95, UKbenchmarkTop: 100, 
+sourceused: "QS" },
+  { id: "international_students",         label: "International Student Ratio",      controllability: 72, description: "Proportion of international students enrolled", unit: "%", min: 0, max: 65, benchmarkLow: 1, benchmarkMid: 19.4, benchmarkTop: 100, UKbenchmarkLow: 5.9, UKbenchmarkMid: 90.25, UKbenchmarkTop: 100, 
+sourceused: "QS & THE" },
+  { id: "international_research_network", label: "International Research Network",   controllability: 55, description: "Breadth and volume of international research collaboration and partnerships", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 55.8, benchmarkTop: 100, UKbenchmarkLow: 3.5, UKbenchmarkMid: 77.95, UKbenchmarkTop: 100, 
+sourceused: "QS" },
+  { id: "international_faculty",          label: "International Faculty Ratio",      controllability: 65, description: "Proportion of academic staff who are international", unit: "%", min: 0, max: 80, benchmarkLow: 1, benchmarkMid: 20.1, benchmarkTop: 100, UKbenchmarkLow: 21.8, UKbenchmarkMid: 89.6, UKbenchmarkTop: 100, 
+sourceused: "QS & THE" },
+  { id: "intl_student_diversity",         label: "International Student Diversity",  controllability: 65, description: "Diversity of nationalities among the international student body (currently 0% weight in QS)", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 21.7, benchmarkTop: 100, UKbenchmarkLow: 9.8, UKbenchmarkMid: 91.05, UKbenchmarkTop: 100, 
+sourceused: "QS" },
+  { id: "sustainability",                 label: "Sustainability",                   controllability: 75, description: "Environmental, social and governance sustainability performance", unit: "score", min: 0, max: 100, benchmarkLow: 3, benchmarkMid: 48.7, benchmarkTop: 100, UKbenchmarkLow: 18.6, UKbenchmarkMid: 73.3, UKbenchmarkTop: 98.5, 
+sourceused: "QS" },
   // ── Times Higher Education World Ranking Metrics ──
   { id: "teaching_reputation",            label: "Teaching Reputation",              controllability: 25, description: "Global academic peer survey component — perceived teaching quality", unit: "score", min: 0, max: 100, benchmarkLow: 12, benchmarkMid: 30, benchmarkTop: 65, sourceused: "THE" },
   { id: "doctorate_bachelor_ratio",       label: "Doctorate–Bachelor Ratio",         controllability: 55, description: "Ratio of doctoral degrees awarded to bachelor degrees awarded", unit: "%", min: 0, max: 100, benchmarkLow: 8, benchmarkMid: 25, benchmarkTop: 55, sourceused: "THE" },
@@ -72,6 +82,22 @@ function getTableImpact(id) { return TABLES.map(t => ({ table: t, weight: WEIGHT
 function getTotalInfluence(id) { return TABLES.reduce((s, t) => s + (WEIGHTS[t.id][id] || 0), 0); }
 function getPriority(id, ctrl) { return Math.round((getTotalInfluence(id) / TABLES.length) * (ctrl / 100)); }
 
+// Get benchmarks based on whether UK or global benchmarks are selected
+function getBenchmarks(metric, useUK) {
+  if (useUK) {
+    return {
+      benchmarkLow: metric.UKbenchmarkLow,
+      benchmarkMid: metric.UKbenchmarkMid,
+      benchmarkTop: metric.UKbenchmarkTop,
+    };
+  }
+  return {
+    benchmarkLow: metric.benchmarkLow,
+    benchmarkMid: metric.benchmarkMid,
+    benchmarkTop: metric.benchmarkTop,
+  };
+}
+
 // Normalise a raw score to 0–100 for a metric, respecting lowerIsBetter
 function normalise(m, val) {
   if (val === null || val === undefined || val === "") return null;
@@ -83,12 +109,14 @@ function normalise(m, val) {
   return Math.max(0, Math.min(100, ((v - m.min) / range) * 100));
 }
 
-// Gap label relative to benchmarks
-function getGapLabel(m, val) {
+// Gap label relative to benchmarks (accepts custom benchmark values)
+function getGapLabel(m, val, benchmarkTop = null, benchmarkMid = null, benchmarkLow = null) {
   if (val === null || val === "") return null;
   const v = parseFloat(val);
   if (isNaN(v)) return null;
-  const top = m.benchmarkTop, mid = m.benchmarkMid, low = m.benchmarkLow;
+  const top = benchmarkTop !== null ? benchmarkTop : m.benchmarkTop;
+  const mid = benchmarkMid !== null ? benchmarkMid : m.benchmarkMid;
+  const low = benchmarkLow !== null ? benchmarkLow : m.benchmarkLow;
   if (m.lowerIsBetter) {
     if (v <= top) return { label: "Top quartile", color: "#22c55e", bg: "#f0fdf4" };
     if (v <= mid) return { label: "Above median", color: "#84cc16", bg: "#f7fee7" };
@@ -126,12 +154,16 @@ const S = {
   label: { fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: "#6b6880" },
 };
 
-function GapBar({ m, val }) {
+function GapBar({ m, val, benchmarkLow = null, benchmarkMid = null, benchmarkTop = null }) {
+  const bLow = benchmarkLow !== null ? benchmarkLow : m.benchmarkLow;
+  const bMid = benchmarkMid !== null ? benchmarkMid : m.benchmarkMid;
+  const bTop = benchmarkTop !== null ? benchmarkTop : m.benchmarkTop;
+  
   const norm = normalise(m, val);
-  const normLow = normalise(m, m.benchmarkLow);
-  const normMid = normalise(m, m.benchmarkMid);
-  const normTop = normalise(m, m.benchmarkTop);
-  const gapInfo = getGapLabel(m, val);
+  const normLow = normalise(m, bLow);
+  const normMid = normalise(m, bMid);
+  const normTop = normalise(m, bTop);
+  const gapInfo = getGapLabel(m, val, bTop, bMid, bLow);
   if (norm === null) return <div style={{ color: "#ccc", fontSize: 12, fontStyle: "italic" }}>No data entered</div>;
 
   return (
@@ -165,6 +197,7 @@ export default function App() {
   const [view, setView] = useState("matrix");
   const [selectedMetric, setSelectedMetric] = useState(null);
   const [hoveredMetric, setHoveredMetric] = useState(null);
+  const [useUKBenchmarks, setUseUKBenchmarks] = useState(false);
   const DUNDEE_QS = {
     academic_reputation: 25.5, employer_reputation: 21.3, citations_per_faculty: 20.6,
     faculty_student_ratio: 44.8, employment_outcomes: 13.9, international_students: 84.4,
@@ -371,7 +404,8 @@ export default function App() {
                   const yPct = 90 - ((avgW / 30) * 85);
                   const r = 18 + tableCount * 6;
                   const band = getBand(m.controllability);
-                  const gapInfo = dataEntered ? getGapLabel(m, perfData[m.id]) : null;
+                  const benchmarks = getBenchmarks(m, useUKBenchmarks);
+                  const gapInfo = dataEntered ? getGapLabel(m, perfData[m.id], benchmarks.benchmarkTop, benchmarks.benchmarkMid, benchmarks.benchmarkLow) : null;
                   const bubbleFill = gapInfo ? gapInfo.color + "44" : band.color + "33";
                   const bubbleBorder = gapInfo ? gapInfo.color : band.color;
                   return (
@@ -406,7 +440,8 @@ export default function App() {
                 {sortedByPriority.slice(0, 10).map((m, i) => {
                   const band = getBand(m.controllability);
                   const tableCount = TABLES.filter(t => (WEIGHTS[t.id][m.id] || 0) > 0).length;
-                  const gapInfo = dataEntered ? getGapLabel(m, perfData[m.id]) : null;
+                  const benchmarks = getBenchmarks(m, useUKBenchmarks);
+                  const gapInfo = dataEntered ? getGapLabel(m, perfData[m.id], benchmarks.benchmarkTop, benchmarks.benchmarkMid, benchmarks.benchmarkLow) : null;
                   return (
                     <div key={m.id} onClick={() => { setSelectedMetric(m.id); setView("detail"); }}
                       style={{ background: "#fff", border: "1px solid #e2e0d8", borderRadius: 8, padding: "14px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: 14, transition: "box-shadow 0.15s" }}
@@ -441,10 +476,57 @@ export default function App() {
               </p>
             </div>
 
+            {/* Benchmark Toggle */}
+            <div style={{ marginBottom: 24, background: "#fff", border: "1px solid #e2e0d8", borderRadius: 10, padding: "14px 18px", display: "flex", alignItems: "center", gap: 14 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e" }}>Compare against:</span>
+              <div style={{ display: "flex", gap: 8 }}>
+                <button
+                  onClick={() => setUseUKBenchmarks(false)}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: 6,
+                    border: useUKBenchmarks ? "1px solid #e2e0d8" : "2px solid #c8a96e",
+                    background: useUKBenchmarks ? "#fff" : "#c8a96e",
+                    color: useUKBenchmarks ? "#6b6880" : "#1a1a2e",
+                    fontWeight: useUKBenchmarks ? 500 : 700,
+                    fontSize: 13,
+                    fontFamily: "inherit",
+                    cursor: "pointer",
+                    transition: "all 0.15s"
+                  }}
+                >
+                  🌍 All Institutions
+                </button>
+                <button
+                  onClick={() => setUseUKBenchmarks(true)}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: 6,
+                    border: !useUKBenchmarks ? "1px solid #e2e0d8" : "2px solid #c8a96e",
+                    background: !useUKBenchmarks ? "#fff" : "#c8a96e",
+                    color: !useUKBenchmarks ? "#6b6880" : "#1a1a2e",
+                    fontWeight: !useUKBenchmarks ? 500 : 700,
+                    fontSize: 13,
+                    fontFamily: "inherit",
+                    cursor: "pointer",
+                    transition: "all 0.15s"
+                  }}
+                >
+                  🇬🇧 UK Institutions
+                </button>
+              </div>
+              <span style={{ fontSize: 12, color: "#9ca3af", marginLeft: "auto" }}>
+                {useUKBenchmarks
+                  ? "Showing benchmarks for UK institutions (QS metrics only)"
+                  : "Showing benchmarks for all global institutions"}
+              </span>
+            </div>
+
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
               {METRICS.map(m => {
                 const val = perfData[m.id];
-                const gapInfo = getGapLabel(m, val);
+                const benchmarks = getBenchmarks(m, useUKBenchmarks);
+                const gapInfo = getGapLabel(m, val, benchmarks.benchmarkTop, benchmarks.benchmarkMid, benchmarks.benchmarkLow);
                 return (
                   <div key={m.id} style={{ background: "#fff", border: `1px solid ${gapInfo ? gapInfo.color + "66" : "#e2e0d8"}`, borderRadius: 10, padding: "16px 18px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
@@ -461,17 +543,17 @@ export default function App() {
                         type="number"
                         value={val}
                         onChange={e => updatePerf(m.id, e.target.value)}
-                        placeholder={`e.g. ${m.benchmarkMid}`}
+                        placeholder={`e.g. ${benchmarks.benchmarkMid}`}
                         min={m.min} max={m.max} step={m.unit === "pts" || m.unit === "£" ? 1 : 0.1}
                         style={{ width: 100, padding: "8px 12px", border: "1px solid #e2e0d8", borderRadius: 6, fontSize: 14, fontFamily: "inherit", outline: "none", background: "#f8f7f4" }}
                       />
                       <span style={{ fontSize: 13, color: "#6b6880" }}>{m.unit}</span>
                       <div style={{ flex: 1, fontSize: 11, color: "#9ca3af", lineHeight: 1.4 }}>
-                        Sector: <span style={{ color: "#f59e0b" }}>{m.benchmarkLow}{m.unit}</span> → <span>{m.benchmarkMid}{m.unit}</span> → <span style={{ color: "#22c55e" }}>{m.benchmarkTop}{m.unit}</span>
+                        Sector: <span style={{ color: "#f59e0b" }}>{benchmarks.benchmarkLow}{m.unit}</span> → <span>{benchmarks.benchmarkMid}{m.unit}</span> → <span style={{ color: "#22c55e" }}>{benchmarks.benchmarkTop}{m.unit}</span>
                         {m.lowerIsBetter && " (lower is better)"}
                       </div>
                     </div>
-                    {val !== "" && <div style={{ marginTop: 10 }}><GapBar m={m} val={val} /></div>}
+                    {val !== "" && <div style={{ marginTop: 10 }}><GapBar m={m} val={val} benchmarkLow={benchmarks.benchmarkLow} benchmarkMid={benchmarks.benchmarkMid} benchmarkTop={benchmarks.benchmarkTop} /></div>}
                   </div>
                 );
               })}
@@ -510,12 +592,64 @@ export default function App() {
               </div>
             ) : (
               <>
+                {/* Benchmark Toggle */}
+                <div style={{ marginBottom: 24, background: "#fff", border: "1px solid #e2e0d8", borderRadius: 10, padding: "14px 18px", display: "flex", alignItems: "center", gap: 14 }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e" }}>Comparing against:</span>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <button
+                      onClick={() => setUseUKBenchmarks(false)}
+                      style={{
+                        padding: "8px 16px",
+                        borderRadius: 6,
+                        border: useUKBenchmarks ? "1px solid #e2e0d8" : "2px solid #c8a96e",
+                        background: useUKBenchmarks ? "#fff" : "#c8a96e",
+                        color: useUKBenchmarks ? "#6b6880" : "#1a1a2e",
+                        fontWeight: useUKBenchmarks ? 500 : 700,
+                        fontSize: 13,
+                        fontFamily: "inherit",
+                        cursor: "pointer",
+                        transition: "all 0.15s"
+                      }}
+                    >
+                      🌍 All Institutions
+                    </button>
+                    <button
+                      onClick={() => setUseUKBenchmarks(true)}
+                      style={{
+                        padding: "8px 16px",
+                        borderRadius: 6,
+                        border: !useUKBenchmarks ? "1px solid #e2e0d8" : "2px solid #c8a96e",
+                        background: !useUKBenchmarks ? "#fff" : "#c8a96e",
+                        color: !useUKBenchmarks ? "#6b6880" : "#1a1a2e",
+                        fontWeight: !useUKBenchmarks ? 500 : 700,
+                        fontSize: 13,
+                        fontFamily: "inherit",
+                        cursor: "pointer",
+                        transition: "all 0.15s"
+                      }}
+                    >
+                      🇬🇧 UK Institutions
+                    </button>
+                  </div>
+                  <span style={{ fontSize: 12, color: "#9ca3af", marginLeft: "auto" }}>
+                    {useUKBenchmarks
+                      ? "Benchmarks for UK institutions (QS metrics only)"
+                      : "Benchmarks for all global institutions"}
+                  </span>
+                </div>
+
                 {/* Table score cards */}
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14, marginBottom: 32 }}>
                   {TABLES.map(t => {
                     const score = tableScore(t.id, perfData);
-                    const benchScore = tableScore(t.id, Object.fromEntries(METRICS.map(m => [m.id, m.benchmarkMid])));
-                    const topScore = tableScore(t.id, Object.fromEntries(METRICS.map(m => [m.id, m.benchmarkTop])));
+                    const benchScore = tableScore(t.id, Object.fromEntries(METRICS.map(m => {
+                      const benchmarks = getBenchmarks(m, useUKBenchmarks);
+                      return [m.id, benchmarks.benchmarkMid];
+                    })));
+                    const topScore = tableScore(t.id, Object.fromEntries(METRICS.map(m => {
+                      const benchmarks = getBenchmarks(m, useUKBenchmarks);
+                      return [m.id, benchmarks.benchmarkTop];
+                    })));
                     const gap = score !== null && benchScore !== null ? (score - benchScore).toFixed(1) : null;
                     return (
                       <div key={t.id} style={{ background: "#fff", border: `2px solid ${t.color}33`, borderRadius: 12, padding: "18px 16px", textAlign: "center" }}>
@@ -542,7 +676,12 @@ export default function App() {
                 {/* Priority gap table */}
                 <h3 style={{ fontSize: 16, margin: "0 0 16px" }}>Metrics Requiring Attention — by Strategic Impact</h3>
                 {(() => {
-                  const belowMedian = gapPriorities.filter(x => x.belowMedian).sort((a, b) => b.priority - a.priority);
+                  const belowMedian = gapPriorities.filter(x => {
+                    const benchmarks = getBenchmarks(x.m, useUKBenchmarks);
+                    const normMidCustom = normalise(x.m, benchmarks.benchmarkMid);
+                    return x.norm !== null && normMidCustom !== null && x.norm < normMidCustom;
+                  }).sort((a, b) => b.priority - a.priority);
+                  
                   if (belowMedian.length === 0) {
                     return <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 10, padding: "20px 24px", color: "#166534", fontSize: 14 }}>
                       🎉 All entered metrics are at or above sector median. Focus on maintaining performance and targeting top-quartile thresholds.
@@ -562,8 +701,9 @@ export default function App() {
                           {belowMedian.map(({ m, gap, priority }, i) => {
                             const val = perfData[m.id];
                             const v = parseFloat(val);
-                            const gapToMed = m.lowerIsBetter ? (m.benchmarkMid - v).toFixed(1) : (v - m.benchmarkMid).toFixed(1);
-                            const gapToTop = m.lowerIsBetter ? (m.benchmarkTop - v).toFixed(1) : (v - m.benchmarkTop).toFixed(1);
+                            const benchmarks = getBenchmarks(m, useUKBenchmarks);
+                            const gapToMed = m.lowerIsBetter ? (benchmarks.benchmarkMid - v).toFixed(1) : (v - benchmarks.benchmarkMid).toFixed(1);
+                            const gapToTop = m.lowerIsBetter ? (benchmarks.benchmarkTop - v).toFixed(1) : (v - benchmarks.benchmarkTop).toFixed(1);
                             const tableCount = TABLES.filter(t => (WEIGHTS[t.id][m.id] || 0) > 0).length;
                             const band = getBand(m.controllability);
                             const maxP = Math.max(...METRICS.map(mm => getPriority(mm.id, mm.controllability)));
@@ -573,7 +713,7 @@ export default function App() {
                                 onMouseLeave={e => e.currentTarget.style.background = i % 2 === 0 ? "#fff" : "#faf9f6"}>
                                 <td style={{ padding: "11px 14px", fontWeight: 600, borderBottom: "1px solid #e2e0d8" }}>{m.label}</td>
                                 <td style={{ padding: "11px 14px", borderBottom: "1px solid #e2e0d8", color: "#ef4444", fontWeight: 700 }}>{v}{m.unit}</td>
-                                <td style={{ padding: "11px 14px", borderBottom: "1px solid #e2e0d8", color: "#6b6880" }}>{m.benchmarkMid}{m.unit}</td>
+                                <td style={{ padding: "11px 14px", borderBottom: "1px solid #e2e0d8", color: "#6b6880" }}>{benchmarks.benchmarkMid}{m.unit}</td>
                                 <td style={{ padding: "11px 14px", borderBottom: "1px solid #e2e0d8", color: "#ef4444", fontWeight: 700 }}>{m.lowerIsBetter ? "+" : ""}{gapToMed}{m.unit}</td>
                                 <td style={{ padding: "11px 14px", borderBottom: "1px solid #e2e0d8", color: "#9ca3af" }}>{m.lowerIsBetter ? "+" : ""}{gapToTop}{m.unit}</td>
                                 <td style={{ padding: "11px 14px", borderBottom: "1px solid #e2e0d8" }}>
@@ -603,7 +743,11 @@ export default function App() {
 
                 {/* Above median summary */}
                 {(() => {
-                  const above = gapPriorities.filter(x => !x.belowMedian);
+                  const above = gapPriorities.filter(x => {
+                    const benchmarks = getBenchmarks(x.m, useUKBenchmarks);
+                    const normMidCustom = normalise(x.m, benchmarks.benchmarkMid);
+                    return x.norm !== null && normMidCustom !== null && !(x.norm < normMidCustom);
+                  });
                   if (above.length === 0) return null;
                   return (
                     <div style={{ marginTop: 24 }}>
@@ -636,7 +780,8 @@ export default function App() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))", gap: 8, marginBottom: 28 }}>
               {METRICS.map(m => {
                 const band = getBand(m.controllability);
-                const gapInfo = dataEntered ? getGapLabel(m, perfData[m.id]) : null;
+                const benchmarks = getBenchmarks(m, useUKBenchmarks);
+                const gapInfo = dataEntered ? getGapLabel(m, perfData[m.id], benchmarks.benchmarkTop, benchmarks.benchmarkMid, benchmarks.benchmarkLow) : null;
                 return (
                   <button key={m.id} onClick={() => setSelectedMetric(m.id)} style={{
                     background: selectedMetric === m.id ? "#1a1a2e" : "#fff",
@@ -660,7 +805,8 @@ export default function App() {
               const band = getBand(metric.controllability);
               const priority = getPriority(metric.id, metric.controllability);
               const maxPriority = Math.max(...METRICS.map(m => getPriority(m.id, m.controllability)));
-              const gapInfo = dataEntered ? getGapLabel(metric, perfData[metric.id]) : null;
+              const benchmarks = getBenchmarks(metric, useUKBenchmarks);
+              const gapInfo = dataEntered ? getGapLabel(metric, perfData[metric.id], benchmarks.benchmarkTop, benchmarks.benchmarkMid, benchmarks.benchmarkLow) : null;
               const val = perfData[metric.id];
 
               return (
@@ -696,23 +842,23 @@ export default function App() {
                         <div style={{ background: "#f8f7f4", borderRadius: 10, padding: "18px 20px" }}>
                           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12, fontSize: 13 }}>
                             <span><strong>Your score:</strong> {val !== "" ? `${val}${metric.unit}` : "Not entered"}</span>
-                            <span style={{ color: "#f59e0b" }}>Sector low: {metric.benchmarkLow}{metric.unit}</span>
-                            <span>Median: {metric.benchmarkMid}{metric.unit}</span>
-                            <span style={{ color: "#22c55e" }}>Top quartile: {metric.benchmarkTop}{metric.unit}</span>
+                            <span style={{ color: "#f59e0b" }}>Sector low: {getBenchmarks(metric, useUKBenchmarks).benchmarkLow}{metric.unit}</span>
+                            <span>Median: {getBenchmarks(metric, useUKBenchmarks).benchmarkMid}{metric.unit}</span>
+                            <span style={{ color: "#22c55e" }}>Top quartile: {getBenchmarks(metric, useUKBenchmarks).benchmarkTop}{metric.unit}</span>
                           </div>
-                          <GapBar m={metric} val={val} />
+                          <GapBar m={metric} val={val} benchmarkLow={getBenchmarks(metric, useUKBenchmarks).benchmarkLow} benchmarkMid={getBenchmarks(metric, useUKBenchmarks).benchmarkMid} benchmarkTop={getBenchmarks(metric, useUKBenchmarks).benchmarkTop} />
                           {val !== "" && (
                             <div style={{ marginTop: 12, fontSize: 13, color: "#3d3b52" }}>
                               {gapInfo && !gapInfo.label.includes("Top") && (
                                 <span>
                                   To reach <strong>sector median</strong>: move by <strong style={{ color: "#f59e0b" }}>
                                     {metric.lowerIsBetter
-                                      ? `${(parseFloat(val) - metric.benchmarkMid).toFixed(1)}${metric.unit} reduction`
-                                      : `${(metric.benchmarkMid - parseFloat(val)).toFixed(1)}${metric.unit} increase`}
+                                      ? `${(parseFloat(val) - getBenchmarks(metric, useUKBenchmarks).benchmarkMid).toFixed(1)}${metric.unit} reduction`
+                                      : `${(getBenchmarks(metric, useUKBenchmarks).benchmarkMid - parseFloat(val)).toFixed(1)}${metric.unit} increase`}
                                   </strong>. To reach <strong>top quartile</strong>: move by <strong style={{ color: "#22c55e" }}>
                                     {metric.lowerIsBetter
-                                      ? `${(parseFloat(val) - metric.benchmarkTop).toFixed(1)}${metric.unit} reduction`
-                                      : `${(metric.benchmarkTop - parseFloat(val)).toFixed(1)}${metric.unit} increase`}
+                                      ? `${(parseFloat(val) - getBenchmarks(metric, useUKBenchmarks).benchmarkTop).toFixed(1)}${metric.unit} reduction`
+                                      : `${(getBenchmarks(metric, useUKBenchmarks).benchmarkTop - parseFloat(val)).toFixed(1)}${metric.unit} increase`}
                                   </strong>.
                                 </span>
                               )}
@@ -720,8 +866,8 @@ export default function App() {
                               {gapInfo?.label === "Above median" && (
                                 <span>Above sector median. To reach <strong>top quartile</strong>: move by <strong style={{ color: "#22c55e" }}>
                                   {metric.lowerIsBetter
-                                    ? `${(parseFloat(val) - metric.benchmarkTop).toFixed(1)}${metric.unit} reduction`
-                                    : `${(metric.benchmarkTop - parseFloat(val)).toFixed(1)}${metric.unit} increase`}
+                                    ? `${(parseFloat(val) - getBenchmarks(metric, useUKBenchmarks).benchmarkTop).toFixed(1)}${metric.unit} reduction`
+                                    : `${(getBenchmarks(metric, useUKBenchmarks).benchmarkTop - parseFloat(val)).toFixed(1)}${metric.unit} increase`}
                                 </strong>.</span>
                               )}
                             </div>
