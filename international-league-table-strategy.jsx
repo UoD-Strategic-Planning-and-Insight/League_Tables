@@ -4,41 +4,47 @@ import { useState } from "react";
 
 const METRICS = [
   // ── QS World University Ranking Metrics ──
-  { id: "academic_reputation",            label: "Academic Reputation",              controllability: 35, description: "Global academic peer survey — perceived research and teaching excellence", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 16, benchmarkTop: 100, UKbenchmarkLow: 3.1, UKbenchmarkMid: 19.5, UKbenchmarkTop: 100, 
-sourceused: "QS" },
-  { id: "employer_reputation",            label: "Employer Reputation",              controllability: 44, description: "Global employer survey — perceived graduate employability and quality", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 16.4, benchmarkTop: 100, UKbenchmarkLow: 3.7, UKbenchmarkMid: 19.05, UKbenchmarkTop: 100, 
- sourceused: "QS" },
-  { id: "citations_per_faculty",          label: "Citations Per Faculty",            controllability: 32, description: "Research citation impact per academic staff member", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 18.05, benchmarkTop: 100, UKbenchmarkLow: 4.4, UKbenchmarkMid: 39.3, UKbenchmarkTop: 95, 
-sourceused: "QS" },
-  { id: "faculty_student_ratio",          label: "Faculty Student Ratio",            controllability: 70, description: "Number of students per academic faculty member (lower is better)", unit: "score", min: 4, max: 50, benchmarkLow: 1, benchmarkMid: 23.6, benchmarkTop: 100, UKbenchmarkLow: 2.6, UKbenchmarkMid: 18, UKbenchmarkTop: 100, sourceused: "QS & THE" },
-  { id: "employment_outcomes",            label: "Employment Outcomes",              controllability: 52, description: "Graduate employment and career outcome performance measure", unit: "score", min: 50, max: 100, benchmarkLow: 1, benchmarkMid: 17.85, benchmarkTop: 100, UKbenchmarkLow: 1, UKbenchmarkMid: 24.95, UKbenchmarkTop: 100, 
-sourceused: "QS" },
-  { id: "international_students",         label: "International Student Ratio",      controllability: 76, description: "Proportion of international students enrolled", unit: "score", min: 0, max: 65, benchmarkLow: 1, benchmarkMid: 19.4, benchmarkTop: 100, UKbenchmarkLow: 5.9, UKbenchmarkMid: 90.25, UKbenchmarkTop: 100, 
-sourceused: "QS & THE" },
-  { id: "international_research_network", label: "International Research Network",   controllability: 58, description: "Breadth and volume of international research collaboration and partnerships", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 55.8, benchmarkTop: 100, UKbenchmarkLow: 3.5, UKbenchmarkMid: 77.95, UKbenchmarkTop: 100, 
-sourceused: "QS" },
-  { id: "international_faculty",          label: "International Faculty Ratio",      controllability: 72, description: "Proportion of academic staff who are international", unit: "score", min: 0, max: 80, benchmarkLow: 1, benchmarkMid: 20.1, benchmarkTop: 100, UKbenchmarkLow: 21.8, UKbenchmarkMid: 89.6, UKbenchmarkTop: 100, 
-sourceused: "QS & THE" },
-  { id: "intl_student_diversity",         label: "International Student Diversity",  controllability: 68, description: "Diversity of nationalities among the international student body (currently 0% weight in QS)", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 21.7, benchmarkTop: 100, UKbenchmarkLow: 9.8, UKbenchmarkMid: 91.05, UKbenchmarkTop: 100, 
-sourceused: "QS" },
-  { id: "sustainability",                 label: "Sustainability",                   controllability: 78, description: "Environmental, social and governance sustainability performance", unit: "score", min: 0, max: 100, benchmarkLow: 3, benchmarkMid: 48.7, benchmarkTop: 100, UKbenchmarkLow: 18.6, UKbenchmarkMid: 73.3, UKbenchmarkTop: 98.5, 
-sourceused: "QS" },
+  { id: "academic_reputation",            label: "Academic Reputation",              controllability: 35, type: "Reputation", dataSource: "Survey", description: "Global academic peer survey — perceived research and teaching excellence", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 16, benchmarkTop: 100, UKbenchmarkLow: 3.1, UKbenchmarkMid: 19.5, UKbenchmarkTop: 100, sourceused: "QS", dataInputs: ["Votes from academics"] },
+  { id: "employer_reputation",            label: "Employer Reputation",              controllability: 44, type: "Reputation", dataSource: "Survey", description: "Global employer survey — perceived graduate employability and quality", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 16.4, benchmarkTop: 100, UKbenchmarkLow: 3.7, UKbenchmarkMid: 19.05, UKbenchmarkTop: 100, sourceused: "QS", dataInputs: ["Votes from employers"] },
+  { id: "citations_per_faculty",          label: "Citations Per Faculty",            controllability: 32, type: "Research", dataSource: "Scopus / HESA", description: "Research citation impact per academic staff member", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 18.05, benchmarkTop: 100, UKbenchmarkLow: 4.4, UKbenchmarkMid: 39.3, UKbenchmarkTop: 95, sourceused: "QS", dataInputs: ["Number of faculty staff", "Volume of citations"] },
+  { id: "faculty_student_ratio",          label: "Faculty Student Ratio",            controllability: 70, type: "Resource", dataSource: "HESA", description: "Number of students per academic faculty member (lower is better)", unit: "score", min: 4, max: 50, benchmarkLow: 1, benchmarkMid: 23.6, benchmarkTop: 100, UKbenchmarkLow: 2.6, UKbenchmarkMid: 18, UKbenchmarkTop: 100, sourceused: "QS & THE", dataInputs: ["Number of faculty staff", "Number of students"] },
+  { id: "employment_outcomes",            label: "Employment Outcomes",              controllability: 52, type: "Outcomes", dataSource: "QS Database", description: "Graduate employment and career outcome performance measure", unit: "score", min: 50, max: 100, benchmarkLow: 1, benchmarkMid: 17.85, benchmarkTop: 100, UKbenchmarkLow: 1, UKbenchmarkMid: 24.95, UKbenchmarkTop: 100, sourceused: "QS", dataInputs: ["Alumni impact", "Employment rate"] },
+  { id: "international_students",         label: "International Student Ratio",      controllability: 76, type: "Global Engagement", dataSource: "HESA", description: "Proportion of international students enrolled", unit: "score", min: 0, max: 65, benchmarkLow: 1, benchmarkMid: 19.4, benchmarkTop: 100, UKbenchmarkLow: 5.9, UKbenchmarkMid: 90.25, UKbenchmarkTop: 100, sourceused: "QS & THE", dataInputs: ["Number of international students", "Number of students"] },
+  { id: "international_research_network", label: "International Research Network",   controllability: 58, type: "Global Engagement", dataSource: "Scopus", description: "Breadth and volume of international research collaboration and partnerships", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 55.8, benchmarkTop: 100, UKbenchmarkLow: 3.5, UKbenchmarkMid: 77.95, UKbenchmarkTop: 100, sourceused: "QS", dataInputs: ["Distinct countries", "International partners"] },
+  { id: "international_faculty",          label: "International Faculty Ratio",      controllability: 72, type: "Global Engagement", dataSource: "HESA", description: "Proportion of academic staff who are international", unit: "score", min: 0, max: 80, benchmarkLow: 1, benchmarkMid: 20.1, benchmarkTop: 100, UKbenchmarkLow: 21.8, UKbenchmarkMid: 89.6, UKbenchmarkTop: 100, sourceused: "QS & THE", dataInputs: ["Number of international faculty", "Number of faculty"] },
+  { id: "intl_student_diversity",         label: "International Student Diversity",  controllability: 68, type: "Global Engagement", dataSource: "HESA", description: "Diversity of nationalities among the international student body (currently 0% weight in QS)", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 21.7, benchmarkTop: 100, UKbenchmarkLow: 9.8, UKbenchmarkMid: 91.05, UKbenchmarkTop: 100, sourceused: "QS", dataInputs: ["Distinct nationalities", "International ratio"] },
+  { id: "sustainability",                 label: "Sustainability",                   controllability: 78, type: "Sustainability", dataSource: "Survey", description: "Environmental, social and governance sustainability performance", unit: "score", min: 0, max: 100, benchmarkLow: 3, benchmarkMid: 48.7, benchmarkTop: 100, UKbenchmarkLow: 18.6, UKbenchmarkMid: 73.3, UKbenchmarkTop: 98.5, sourceused: "QS", dataInputs: ["QS Sustainability Ranking"] },
   // ── Times Higher Education World Ranking Metrics ──
-  { id: "teaching_reputation",            label: "Teaching Reputation",              controllability: 16, description: "Global academic peer survey component — perceived teaching quality", unit: "score", min: 0, max: 100, benchmarkLow: 12, benchmarkMid: 30, benchmarkTop: 65, sourceused: "THE" },
-  { id: "doctorate_bachelor_ratio",       label: "Doctorate–Bachelor Ratio",         controllability: 60, description: "Ratio of doctoral degrees awarded to bachelor degrees awarded", unit: "%", min: 0, max: 100, benchmarkLow: 8, benchmarkMid: 25, benchmarkTop: 55, sourceused: "THE" },
-  { id: "doctorate_staff_ratio",          label: "Doctorate–Staff Ratio",            controllability: 74, description: "Proportion of academic staff holding doctoral qualifications", unit: "%", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 42, benchmarkTop: 82, sourceused: "THE" },
-  { id: "institutional_income",           label: "Institutional Income",             controllability: 42, description: "Institutional income per academic staff member (normalised score)", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 42, benchmarkTop: 78, sourceused: "THE" },
-  { id: "research_reputation",            label: "Research Reputation",              controllability: 15, description: "Global academic peer survey component — perceived research quality", unit: "score", min: 0, max: 100, benchmarkLow: 12, benchmarkMid: 32, benchmarkTop: 72, sourceused: "THE" },
-  { id: "research_income",                label: "Research Income",                  controllability: 44, description: "Research income from industry, grants and other sources (normalised score)", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 40, benchmarkTop: 75, sourceused: "THE" },
-  { id: "research_productivity",          label: "Research Productivity",            controllability: 54, description: "Volume of research papers published per academic staff member", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 42, benchmarkTop: 78, sourceused: "THE" },
-  { id: "citation_impact",                label: "Citation Impact",                  controllability: 32, description: "Normalised average citations per paper (field-weighted impact)", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 40, benchmarkTop: 75, sourceused: "THE" },
-  { id: "research_strength",              label: "Research Strength",                controllability: 42, description: "Volume-weighted measure of research output and impact", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 42, benchmarkTop: 78, sourceused: "THE" },
-  { id: "research_excellence",            label: "Research Excellence",              controllability: 34, description: "Proportion of outputs with above-average field-normalised citation impact", unit: "score", min: 0, max: 100, benchmarkLow: 15, benchmarkMid: 38, benchmarkTop: 74, sourceused: "THE" },
-  { id: "research_influence",             label: "Research Influence",               controllability: 24, description: "Proportion of papers cited by high-impact research globally", unit: "score", min: 0, max: 100, benchmarkLow: 12, benchmarkMid: 35, benchmarkTop: 72, sourceused: "THE" },
-  { id: "industry_income",                label: "Industry Income",                  controllability: 66, description: "Income from industry partnerships and commercial research activity (normalised)", unit: "score", min: 0, max: 100, benchmarkLow: 15, benchmarkMid: 38, benchmarkTop: 74, sourceused: "THE" },
-  { id: "patents",                        label: "Patents",                          controllability: 43, description: "Innovation output — number of patents filed and patent citations", unit: "score", min: 0, max: 100, benchmarkLow: 8, benchmarkMid: 28, benchmarkTop: 62, sourceused: "THE" },
-  { id: "international_co_authorship",    label: "International Co-Authorship",      controllability: 63, description: "Proportion of research papers with at least one international co-author", unit: "%", min: 15, max: 100, benchmarkLow: 28, benchmarkMid: 50, benchmarkTop: 74, sourceused: "THE" }
+  { id: "teaching_reputation",            label: "Teaching Reputation",              controllability: 16, type: "Reputation", dataSource: "Survey", description: "Global academic peer survey component — perceived teaching quality", unit: "score", min: 0, max: 100, benchmarkLow: 12, benchmarkMid: 30, benchmarkTop: 65, sourceused: "THE", dataInputs: ["Votes from academics"] },
+  { id: "doctorate_bachelor_ratio",       label: "Doctorate–Bachelor Ratio",         controllability: 60, type: "Outcomes", dataSource: "HESA", description: "Ratio of doctoral degrees awarded to bachelor degrees awarded", unit: "%", min: 0, max: 100, benchmarkLow: 8, benchmarkMid: 25, benchmarkTop: 55, sourceused: "THE", dataInputs: ["Doctorates awarded", "Undergraduate degrees"] },
+  { id: "doctorate_staff_ratio",          label: "Doctorate–Staff Ratio",            controllability: 74, type: "Resource", dataSource: "HESA", description: "Proportion of academic staff holding doctoral qualifications", unit: "%", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 42, benchmarkTop: 82, sourceused: "THE", dataInputs: ["Number of doctorates", "Number of staff"] },
+  { id: "institutional_income",           label: "Institutional Income",             controllability: 42, type: "Financial", dataSource: "HESA", description: "Institutional income per academic staff member (normalised score)", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 42, benchmarkTop: 78, sourceused: "THE", dataInputs: ["Institutional income", "Number of staff"] },
+  { id: "research_reputation",            label: "Research Reputation",              controllability: 15, type: "Reputation", dataSource: "Survey", description: "Global academic peer survey component — perceived research quality", unit: "score", min: 0, max: 100, benchmarkLow: 12, benchmarkMid: 32, benchmarkTop: 72, sourceused: "THE", dataInputs: ["Votes from academics"] },
+  { id: "research_income",                label: "Research Income",                  controllability: 44, type: "Financial", dataSource: "HESA", description: "Research income from industry, grants and other sources (normalised score)", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 40, benchmarkTop: 75, sourceused: "THE", dataInputs: ["Research income", "Number of staff"] },
+  { id: "research_productivity",          label: "Research Productivity",            controllability: 54, type: "Research", dataSource: "Scopus", description: "Volume of research papers published per academic staff member", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 42, benchmarkTop: 78, sourceused: "THE", dataInputs: ["Number of papers", "Number of research staff"] },
+  { id: "citation_impact",                label: "Citation Impact",                  controllability: 32, type: "Research", dataSource: "Scopus", description: "Normalised average citations per paper (field-weighted impact)", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 40, benchmarkTop: 75, sourceused: "THE", dataInputs: ["Average citations"] },
+  { id: "research_strength",              label: "Research Strength",                controllability: 42, type: "Research", dataSource: "Scopus", description: "Volume-weighted measure of research output and impact", unit: "score", min: 0, max: 100, benchmarkLow: 18, benchmarkMid: 42, benchmarkTop: 78, sourceused: "THE", dataInputs: ["FWCI (75th percentile)"] },
+  { id: "research_excellence",            label: "Research Excellence",              controllability: 34, type: "Research", dataSource: "Scopus", description: "Proportion of outputs with above-average field-normalised citation impact", unit: "score", min: 0, max: 100, benchmarkLow: 15, benchmarkMid: 38, benchmarkTop: 74, sourceused: "THE", dataInputs: ["FWCI (top 10% worldwide)"] },
+  { id: "research_influence",             label: "Research Influence",               controllability: 24, type: "Research", dataSource: "Scopus", description: "Proportion of papers cited by high-impact research globally", unit: "score", min: 0, max: 100, benchmarkLow: 12, benchmarkMid: 35, benchmarkTop: 72, sourceused: "THE", dataInputs: ["Citations", "Influential citations"] },
+  { id: "industry_income",                label: "Industry Income",                  controllability: 66, type: "Financial", dataSource: "HESA", description: "Income from industry partnerships and commercial research activity (normalised)", unit: "score", min: 0, max: 100, benchmarkLow: 15, benchmarkMid: 38, benchmarkTop: 74, sourceused: "THE", dataInputs: ["Industry income", "Number of staff"] },
+  { id: "patents",                        label: "Patents",                          controllability: 43, type: "Industry", dataSource: "HESA", description: "Innovation output — number of patents filed and patent citations", unit: "score", min: 0, max: 100, benchmarkLow: 8, benchmarkMid: 28, benchmarkTop: 62, sourceused: "THE", dataInputs: ["Patent count"] },
+  { id: "international_co_authorship",    label: "International Co-Authorship",      controllability: 63, type: "Global Engagement", dataSource: "Scopus", description: "Proportion of research papers with at least one international co-author", unit: "%", min: 15, max: 100, benchmarkLow: 28, benchmarkMid: 50, benchmarkTop: 74, sourceused: "THE", dataInputs: ["Intl co-authored papers", "Total publications"] }
 ];
+
+const METRIC_TYPES = [
+  { id: "Reputation",          label: "Reputation",          color: "#7c3aed", bg: "#f3e8ff" },
+  { id: "Resource",            label: "Resource",            color: "#2563eb", bg: "#eff6ff" },
+  { id: "Research",            label: "Research",            color: "#059669", bg: "#f0fdf4" },
+  { id: "Outcomes",            label: "Outcomes",            color: "#dc2626", bg: "#fef2f2" },
+  { id: "Global Engagement",   label: "Global Engagement",   color: "#d97706", bg: "#fffbeb" },
+  { id: "Sustainability",      label: "Sustainability",      color: "#06b6d4", bg: "#ecfdf5" },
+  { id: "Financial",           label: "Financial",           color: "#6366f1", bg: "#f0f4ff" },
+  { id: "Industry",            label: "Industry",            color: "#8b5cf6", bg: "#faf5ff" },
+];
+
+function getMetricType(typeId) {
+  return METRIC_TYPES.find(t => t.id === typeId);
+}
 
 const TABLES = [
   { id: "qs",  label: "QS World University Ranking",    shortLabel: "QS",  color: "#562891" },
@@ -193,7 +199,17 @@ function getPillarForMetric(metricId) {
   return PILLARS.find(p => p.componentIds.includes(metricId));
 }
 
-// Get benchmarks based on whether UK or global benchmarks are selected
+// Get data source icon based on data source type
+function getDataSourceIcon(dataSource) {
+  const icons = {
+    "Survey": { icon: "🗣️", label: "External perception" },
+    "HESA": { icon: "🎯", label: "Internal control" },
+    "Scopus": { icon: "📊", label: "Mixed influence" },
+    "QS Database": { icon: "📊", label: "External database" },
+    "Scopus / HESA": { icon: "📊", label: "Mixed sources" },
+  };
+  return icons[dataSource] || { icon: "📌", label: "Mixed sources" };
+}
 function getBenchmarks(metric, useUK) {
   if (useUK) {
     return {
@@ -461,7 +477,12 @@ export default function App() {
                         onMouseEnter={() => setHoveredMetric(m.id)}
                         onMouseLeave={() => setHoveredMetric(null)}
                         style={{ background: isHovered ? "#f0ede6" : i % 2 === 0 ? "#fff" : "#faf9f6", cursor: "pointer", transition: "background 0.12s" }}>
-                        <td style={{ padding: "11px 16px", fontSize: 13, borderBottom: "1px solid #e2e0d8" }}>{m.label}</td>
+                        <td style={{ padding: "11px 16px", fontSize: 13, borderBottom: "1px solid #e2e0d8" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                            <span>{m.label}</span>
+                            {m.type && <span style={{ display: "inline-block", padding: "2px 8px", borderRadius: 99, fontSize: 11, fontWeight: 700, background: getMetricType(m.type)?.bg, color: getMetricType(m.type)?.color }}>{m.type}</span>}
+                          </div>
+                        </td>
                         {TABLES.map(t => {
                           const w = WEIGHTS[t.id][m.id] || 0;
                           const intensity = w > 0 ? Math.max(0.18, Math.min(1, w / 22)) : 0;
@@ -493,16 +514,31 @@ export default function App() {
                 </tbody>
               </table>
             </div>
-            <div style={{ display: "flex", gap: 24, marginTop: 20, flexWrap: "wrap", alignItems: "center" }}>
-              <div style={{ fontSize: 12, color: "#6b6880" }}><strong>Control:</strong></div>
-              {CONTROLLABILITY_BANDS.map(b => (
-                <div key={b.label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12 }}>
-                  <div style={{ width: 12, height: 12, borderRadius: 99, background: b.color }} />
-                  <span style={{ color: "#6b6880" }}>{b.label}</span>
-                </div>
-              ))}
-              {!dataEntered && <span style={{ fontSize: 12, color: "#c8a96e", marginLeft: 12 }}>💡 Enter performance data to see your position in the final column</span>}
+            <div style={{ display: "flex", gap: 24, marginTop: 20, flexWrap: "wrap", alignItems: "flex-start" }}>
+              <div>
+                <div style={{ fontSize: 12, color: "#6b6880", marginBottom: 8 }}><strong>Control:</strong></div>
+                {CONTROLLABILITY_BANDS.map(b => (
+                  <div key={b.label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12 }}>
+                    <div style={{ width: 12, height: 12, borderRadius: 99, background: b.color }} />
+                    <span style={{ color: "#6b6880" }}>{b.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div>
+                <div style={{ fontSize: 12, color: "#6b6880", marginBottom: 8 }}><strong>Data sources:</strong></div>
+                {[
+                  { icon: "🎯", label: "HESA — Internal, high control" },
+                  { icon: "📊", label: "Scopus/Mixed — Medium influence" },
+                  { icon: "🗣️", label: "Survey — External perception" }
+                ].map(d => (
+                  <div key={d.label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12 }}>
+                    <span>{d.icon}</span>
+                    <span style={{ color: "#6b6880" }}>{d.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
+            {!dataEntered && <span style={{ fontSize: 12, color: "#c8a96e", marginTop: 12, display: "inline-block" }}>💡 Enter performance data to see your position in the final column</span>}
           </div>
         )}
 
@@ -548,10 +584,13 @@ export default function App() {
                   return (
                     <div key={m.id}
                       onClick={() => { setSelectedMetric(m.id); setView("detail"); }}
-                      title={`${m.label}\nControl: ${m.controllability}%\nAvg weight: ${avgW.toFixed(0)}%\n${tableCount} tables${gapInfo ? "\nYour position: " + gapInfo.label : ""}`}
-                      style={{ position: "absolute", left: `${xPct}%`, top: `${yPct}%`, width: r * 2, height: r * 2, borderRadius: "50%", background: bubbleFill, border: `2px solid ${bubbleBorder}`, transform: "translate(-50%,-50%)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2, transition: "all 0.15s" }}
+                      title={`${m.label}\nControl: ${m.controllability}%\nAvg weight: ${avgW.toFixed(0)}%\n${tableCount} tables\nData source: ${m.dataSource}${gapInfo ? "\nYour position: " + gapInfo.label : ""}`}
+                      style={{ position: "absolute", left: `${xPct}%`, top: `${yPct}%`, width: r * 2, height: r * 2, borderRadius: "50%", background: bubbleFill, border: `2px solid ${bubbleBorder}`, transform: "translate(-50%,-50%)", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2, transition: "all 0.15s" }}
                       onMouseEnter={e => { e.currentTarget.style.zIndex = 10; e.currentTarget.style.background = bubbleBorder + "66"; }}
                       onMouseLeave={e => { e.currentTarget.style.zIndex = 2; e.currentTarget.style.background = bubbleFill; }}>
+                      <span style={{ fontSize: 7, fontWeight: 700, textAlign: "center", color: "#1a1a2e", padding: "0 2px", maxWidth: r * 1.8 }}>
+                        {getDataSourceIcon(m.dataSource).icon}
+                      </span>
                       <span style={{ fontSize: 9, fontWeight: 700, textAlign: "center", color: "#1a1a2e", lineHeight: 1.2, padding: "0 2px", maxWidth: r * 1.8 }}>
                         {m.label.replace("NSS: ", "").replace(" Ratio", "").replace(" Rate", "").substring(0, 20)}
                       </span>
@@ -560,17 +599,32 @@ export default function App() {
                 })}
               </div>
             </div>
-            {dataEntered && (
-              <div style={{ display: "flex", gap: 16, marginTop: 12, flexWrap: "wrap", fontSize: 12 }}>
-                <span style={{ color: "#6b6880" }}>Bubble colour = your sector position:</span>
-                {[{ label: "Top quartile", color: "#22c55e" }, { label: "Above median", color: "#84cc16" }, { label: "Below median", color: "#f59e0b" }, { label: "Bottom quartile", color: "#ef4444" }].map(s => (
-                  <span key={s.label} style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                    <div style={{ width: 10, height: 10, borderRadius: "50%", background: s.color }} />
-                    <span style={{ color: "#6b6880" }}>{s.label}</span>
-                  </span>
+            <div style={{ display: "flex", gap: 24, marginTop: 12, flexWrap: "wrap", alignItems: "flex-start" }}>
+              {dataEntered && (
+                <div>
+                  <div style={{ fontSize: 12, color: "#6b6880", marginBottom: 8 }}><strong>Bubble colour:</strong></div>
+                  {[{ label: "Top quartile", color: "#22c55e" }, { label: "Above median", color: "#84cc16" }, { label: "Below median", color: "#f59e0b" }, { label: "Bottom quartile", color: "#ef4444" }].map(s => (
+                    <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12 }}>
+                      <div style={{ width: 10, height: 10, borderRadius: "50%", background: s.color }} />
+                      <span style={{ color: "#6b6880" }}>{s.label}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div>
+                <div style={{ fontSize: 12, color: "#6b6880", marginBottom: 8 }}><strong>Data sources:</strong></div>
+                {[
+                  { icon: "🎯", label: "HESA — Internal, high control" },
+                  { icon: "📊", label: "Scopus/Mixed — Medium influence" },
+                  { icon: "🗣️", label: "Survey — External perception" }
+                ].map(d => (
+                  <div key={d.label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12 }}>
+                    <span>{d.icon}</span>
+                    <span style={{ color: "#6b6880" }}>{d.label}</span>
+                  </div>
                 ))}
               </div>
-            )}
+            </div>
             <div style={{ marginTop: 32 }}>
               <h3 style={{ fontSize: 16, margin: "0 0 16px" }}>Ranked Priority Levers</h3>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -937,7 +991,9 @@ export default function App() {
               })}
             </div>
 
-            {metric && (() => {
+            {selectedMetric && (() => {
+              const metric = [...METRICS, ...PILLARS].find(m => m.id === selectedMetric);
+              if (!metric) return null;
               const impacts = getTableImpact(metric.id);
               const band = getBand(metric.controllability);
               const priority = getPriority(metric.id, metric.controllability);
@@ -971,6 +1027,35 @@ export default function App() {
                         </div>
                       ))}
                     </div>
+
+                    {/* Data Architecture */}
+                    <h4 style={{ margin: "0 0 14px", fontSize: 15 }}>Data Architecture</h4>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 28 }}>
+                      <div style={{ background: "#fff", border: "1px solid #e2e0d8", borderRadius: 10, padding: "14px 16px" }}>
+                        <div style={{ fontSize: 11, color: "#6b6880", marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>Type</div>
+                        {metric.type && (
+                          <div style={{ display: "inline-block", padding: "4px 10px", borderRadius: 99, fontSize: 12, fontWeight: 700, background: getMetricType(metric.type)?.bg, color: getMetricType(metric.type)?.color }}>
+                            {metric.type}
+                          </div>
+                        )}
+                      </div>
+                      <div style={{ background: "#fff", border: "1px solid #e2e0d8", borderRadius: 10, padding: "14px 16px" }}>
+                        <div style={{ fontSize: 11, color: "#6b6880", marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>Data Source</div>
+                        <div style={{ fontSize: 13, fontWeight: 600 }}>{metric.dataSource}</div>
+                      </div>
+                    </div>
+
+                    {/* Data Inputs */}
+                    {metric.dataInputs && metric.dataInputs.length > 0 && (
+                      <div style={{ marginBottom: 28 }}>
+                        <h4 style={{ margin: "0 0 12px", fontSize: 15 }}>Data Inputs Required</h4>
+                        <div style={{ background: "#f8f7f4", borderRadius: 10, padding: "16px 18px" }}>
+                          <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13, color: "#3d3b52", lineHeight: 1.8 }}>
+                            {metric.dataInputs.map((input, idx) => <li key={idx}>{input}</li>)}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Your score vs benchmarks */}
                     {dataEntered && (
