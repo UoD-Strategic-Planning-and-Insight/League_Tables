@@ -464,7 +464,7 @@ export default function App() {
                         <td style={{ padding: "11px 16px", fontSize: 13, borderBottom: "1px solid #e2e0d8" }}>{m.label}</td>
                         {TABLES.map(t => {
                           const w = WEIGHTS[t.id][m.id] || 0;
-                          const intensity = w > 0 ? Math.max(0.18, w / 22) : 0;
+                          const intensity = w > 0 ? Math.max(0.18, Math.min(1, w / 22)) : 0;
                           return (
                             <td key={t.id} style={{ padding: "11px 12px", textAlign: "center", borderBottom: "1px solid #e2e0d8", background: w > 0 ? `${t.color}${Math.round(intensity * 255).toString(16).padStart(2, "0")}` : "transparent" }}>
                               {w > 0 ? <span style={{ fontWeight: 700, fontSize: 13, color: intensity > 0.55 ? "#fff" : t.color }}>{w}%</span> : <span style={{ color: "#ccc" }}>—</span>}
