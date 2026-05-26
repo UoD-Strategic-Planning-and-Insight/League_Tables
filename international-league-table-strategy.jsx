@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const METRICS = [
   // ── QS World University Ranking Metrics ──
-  { id: "academic_reputation",            label: "Academic Reputation",              controllability: 36, description: "Global academic peer survey — perceived research and teaching excellence", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 16, benchmarkTop: 100, UKbenchmarkLow: 3.1, UKbenchmarkMid: 19.5, UKbenchmarkTop: 100, 
+  { id: "academic_reputation",            label: "Academic Reputation",              controllability: 35, description: "Global academic peer survey — perceived research and teaching excellence", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 16, benchmarkTop: 100, UKbenchmarkLow: 3.1, UKbenchmarkMid: 19.5, UKbenchmarkTop: 100, 
 sourceused: "QS" },
   { id: "employer_reputation",            label: "Employer Reputation",              controllability: 44, description: "Global employer survey — perceived graduate employability and quality", unit: "score", min: 0, max: 100, benchmarkLow: 1, benchmarkMid: 16.4, benchmarkTop: 100, UKbenchmarkLow: 3.7, UKbenchmarkMid: 19.05, UKbenchmarkTop: 100, 
  sourceused: "QS" },
