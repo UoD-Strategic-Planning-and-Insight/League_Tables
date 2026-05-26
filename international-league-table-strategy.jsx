@@ -154,7 +154,7 @@ const PILLARS = [
     UKbenchmarkTop: 98.3,
     sourceused: "THE",
   },
-];
+]; 
 
 const PILLAR_WEIGHTS = Object.fromEntries(PILLARS.map(p => [
   p.id,
