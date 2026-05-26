@@ -340,6 +340,13 @@ export default function App() {
     patents: 99.7,
     international_co_authorship: 87.1,
   };
+  const DUNDEE_THE_PILLARS = {
+    the_teaching: 28.5,
+    the_research_environment: 32.6,
+    the_research_quality: 82.1,
+    the_industry: 87,
+    the_international_outlook: 91.7,
+  };
   const [perfData, setPerfData] = useState(() => {
     const base = {
       ...Object.fromEntries(METRICS.map(m => [m.id, ""])),
@@ -353,7 +360,7 @@ export default function App() {
         .filter(v => !Number.isNaN(v));
       withPillars[pillar.id] = values.length ? Math.round((values.reduce((sum, v) => sum + v, 0) / values.length) * 10) / 10 : "";
     });
-    return withPillars;
+    return { ...withPillars, ...DUNDEE_THE_PILLARS };
   });
   const [dataEntered, setDataEntered] = useState(true);
 
