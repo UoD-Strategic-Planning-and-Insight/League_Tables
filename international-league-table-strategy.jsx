@@ -68,6 +68,102 @@ const WEIGHTS = {
   },
 };
 
+const PILLARS = [
+  {
+    id: "the_teaching",
+    label: "Teaching",
+    description: "Consists of doctorate bachelor ratio, doctorate staff ratio, institutional income, student staff ratio, and teaching reputation.",
+    componentIds: ["teaching_reputation", "doctorate_bachelor_ratio", "doctorate_staff_ratio", "institutional_income", "faculty_student_ratio"],
+    controllability: 50,
+    unit: "score",
+    min: 0,
+    max: 100,
+    benchmarkLow: 8.6,
+    benchmarkMid: 25.9,
+    benchmarkTop: 57.4,
+    UKbenchmarkLow: 15.4,
+    UKbenchmarkMid: 23.9,
+    UKbenchmarkTop: 61.2,
+    sourceused: "THE",
+  },
+  {
+    id: "the_research_environment",
+    label: "Research Environment",
+    description: "Consists of research productivity, research income, and research reputation.",
+    componentIds: ["research_productivity", "research_income", "research_reputation"],
+    controllability: 37,
+    unit: "score",
+    min: 0,
+    max: 100,
+    benchmarkLow: 6.8,
+    benchmarkMid: 17.4,
+    benchmarkTop: 53.8,
+    UKbenchmarkLow: 9.6,
+    UKbenchmarkMid: 22.8,
+    UKbenchmarkTop: 65.9,
+    sourceused: "THE",
+  },
+  {
+    id: "the_research_quality",
+    label: "Research Quality",
+    description: "Consists of citation impact, research excellence, research strength, and research influence.",
+    componentIds: ["citation_impact", "research_excellence", "research_strength", "research_influence"],
+    controllability: 37,
+    unit: "score",
+    min: 0,
+    max: 100,
+    benchmarkLow: 4,
+    benchmarkMid: 53,
+    benchmarkTop: 99.6,
+    UKbenchmarkLow: 30.2,
+    UKbenchmarkMid: 76,
+    UKbenchmarkTop: 98,
+    sourceused: "THE",
+  },
+  {
+    id: "the_industry",
+    label: "Industry",
+    description: "Consists of industry income and patents.",
+    componentIds: ["industry_income", "patents"],
+    controllability: 50,
+    unit: "score",
+    min: 0,
+    max: 100,
+    benchmarkLow: 16,
+    benchmarkMid: 42.3,
+    benchmarkTop: 100,
+    UKbenchmarkLow: 16,
+    UKbenchmarkMid: 57,
+    UKbenchmarkTop: 99.9,
+    sourceused: "THE",
+  },
+  {
+    id: "the_international_outlook",
+    label: "International Outlook",
+    description: "Consists of international co-authorship, international staff and international students.",
+    componentIds: ["international_co_authorship", "international_faculty", "international_students"],
+    controllability: 64,
+    unit: "score",
+    min: 0,
+    max: 100,
+    benchmarkLow: 17.1,
+    benchmarkMid: 45.2,
+    benchmarkTop: 99.5,
+    UKbenchmarkLow: 66.1,
+    UKbenchmarkMid: 90.5,
+    UKbenchmarkTop: 98.3,
+    sourceused: "THE",
+  },
+];
+
+const PILLAR_WEIGHTS = Object.fromEntries(PILLARS.map(p => [
+  p.id,
+  p.componentIds.reduce((sum, metricId) => sum + (WEIGHTS.the[metricId] || 0), 0),
+]));
+
+const DATA_ENTRY_FIELDS = METRICS.filter(m => m.sourceused !== "THE");
+const ANALYSIS_FIELDS = [...DATA_ENTRY_FIELDS, ...PILLARS];
+
 const CONTROLLABILITY_BANDS = [
   { min: 70, label: "High Control",   color: "#22c55e", bg: "#f0fdf4" },
   { min: 45, label: "Med. Control",   color: "#f59e0b", bg: "#fffbeb" },
@@ -77,9 +173,25 @@ const CONTROLLABILITY_BANDS = [
 // ── HELPERS ──────────────────────────────────────────────────────────────────
 
 function getBand(val) { return CONTROLLABILITY_BANDS.find(b => val >= b.min); }
-function getTableImpact(id) { return TABLES.map(t => ({ table: t, weight: WEIGHTS[t.id][id] || 0 })).filter(x => x.weight > 0); }
-function getTotalInfluence(id) { return TABLES.reduce((s, t) => s + (WEIGHTS[t.id][id] || 0), 0); }
+function getTableImpact(id) {
+  const pillar = PILLARS.find(p => p.id === id);
+  if (pillar) {
+    return [{ table: TABLES.find(t => t.id === "the"), weight: PILLAR_WEIGHTS[id] || 0 }].filter(x => x.weight > 0);
+  }
+  return TABLES.map(t => ({ table: t, weight: WEIGHTS[t.id][id] || 0 })).filter(x => x.weight > 0);
+}
+function getTotalInfluence(id) {
+  const pillar = PILLARS.find(p => p.id === id);
+  if (pillar) {
+    return PILLAR_WEIGHTS[id] || 0;
+  }
+  return TABLES.reduce((s, t) => s + (WEIGHTS[t.id][id] || 0), 0);
+}
 function getPriority(id, ctrl) { return Math.round((getTotalInfluence(id) / TABLES.length) * (ctrl / 100)); }
+
+function getPillarForMetric(metricId) {
+  return PILLARS.find(p => p.componentIds.includes(metricId));
+}
 
 // Get benchmarks based on whether UK or global benchmarks are selected
 function getBenchmarks(metric, useUK) {
@@ -132,17 +244,26 @@ function getGapLabel(m, val, benchmarkTop = null, benchmarkMid = null, benchmark
 // Compute a weighted score for a table given performance data (0–100)
 function tableScore(tableId, perfData) {
   let score = 0, totalWeight = 0;
-  METRICS.forEach(m => {
-    const w = WEIGHTS[tableId][m.id] || 0;
-    if (w === 0) return;
-    const n = normalise(m, perfData[m.id]);
-    if (n !== null) { score += n * w; totalWeight += w; }
-  });
+  if (tableId === "the") {
+    PILLARS.forEach(p => {
+      const w = PILLAR_WEIGHTS[p.id] || 0;
+      if (w === 0) return;
+      const n = normalise(p, perfData[p.id]);
+      if (n !== null) { score += n * w; totalWeight += w; }
+    });
+  } else {
+    METRICS.forEach(m => {
+      const w = WEIGHTS[tableId][m.id] || 0;
+      if (w === 0) return;
+      const n = normalise(m, perfData[m.id]);
+      if (n !== null) { score += n * w; totalWeight += w; }
+    });
+  }
   return totalWeight > 0 ? Math.round((score / totalWeight) * 10) / 10 : null;
 }
 
 function hasAnyData(perfData) {
-  return METRICS.some(m => perfData[m.id] !== "" && perfData[m.id] !== undefined && perfData[m.id] !== null);
+  return ANALYSIS_FIELDS.some(m => perfData[m.id] !== "" && perfData[m.id] !== undefined && perfData[m.id] !== null);
 }
 
 // ── COMPONENTS ───────────────────────────────────────────────────────────────
@@ -219,11 +340,21 @@ export default function App() {
     patents: 99.7,
     international_co_authorship: 87.1,
   };
-  const [perfData, setPerfData] = useState(() => ({
-    ...Object.fromEntries(METRICS.map(m => [m.id, ""])),
-    ...DUNDEE_QS,
-    ...DUNDEE_THE,
-  }));
+  const [perfData, setPerfData] = useState(() => {
+    const base = {
+      ...Object.fromEntries(METRICS.map(m => [m.id, ""])),
+      ...DUNDEE_QS,
+      ...DUNDEE_THE,
+    };
+    const withPillars = { ...base };
+    PILLARS.forEach(pillar => {
+      const values = pillar.componentIds
+        .map(id => parseFloat(base[id]))
+        .filter(v => !Number.isNaN(v));
+      withPillars[pillar.id] = values.length ? Math.round((values.reduce((sum, v) => sum + v, 0) / values.length) * 10) / 10 : "";
+    });
+    return withPillars;
+  });
   const [dataEntered, setDataEntered] = useState(true);
 
   const metric = selectedMetric ? METRICS.find(m => m.id === selectedMetric) : null;
@@ -236,7 +367,7 @@ export default function App() {
   }
 
   // Compute gap priority: metrics where we're below median AND high strategic priority
-  const gapPriorities = METRICS.map(m => {
+  const gapPriorities = ANALYSIS_FIELDS.map(m => {
     const gap = getGapLabel(m, perfData[m.id]);
     const priority = getPriority(m.id, m.controllability);
     const norm = normalise(m, perfData[m.id]);
@@ -516,13 +647,13 @@ export default function App() {
               </div>
               <span style={{ fontSize: 12, color: "#9ca3af", marginLeft: "auto" }}>
                 {useUKBenchmarks
-                  ? "Showing benchmarks for UK institutions (QS metrics only)"
+                  ? "Showing benchmarks for UK institutions (QS metrics + THE pillars)"
                   : "Showing benchmarks for all global institutions"}
               </span>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-              {METRICS.map(m => {
+              {ANALYSIS_FIELDS.map(m => {
                 const val = perfData[m.id];
                 const benchmarks = getBenchmarks(m, useUKBenchmarks);
                 const gapInfo = getGapLabel(m, val, benchmarks.benchmarkTop, benchmarks.benchmarkMid, benchmarks.benchmarkLow);
@@ -632,7 +763,7 @@ export default function App() {
                   </div>
                   <span style={{ fontSize: 12, color: "#9ca3af", marginLeft: "auto" }}>
                     {useUKBenchmarks
-                      ? "Benchmarks for UK institutions (QS metrics only)"
+                      ? "Benchmarks for UK institutions (QS metrics + THE pillars)"
                       : "Benchmarks for all global institutions"}
                   </span>
                 </div>
@@ -641,14 +772,14 @@ export default function App() {
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14, marginBottom: 32 }}>
                   {TABLES.map(t => {
                     const score = tableScore(t.id, perfData);
-                    const benchScore = tableScore(t.id, Object.fromEntries(METRICS.map(m => {
-                      const benchmarks = getBenchmarks(m, useUKBenchmarks);
-                      return [m.id, benchmarks.benchmarkMid];
-                    })));
-                    const topScore = tableScore(t.id, Object.fromEntries(METRICS.map(m => {
-                      const benchmarks = getBenchmarks(m, useUKBenchmarks);
-                      return [m.id, benchmarks.benchmarkTop];
-                    })));
+                    const benchScore = tableScore(t.id, t.id === "the"
+                      ? Object.fromEntries(PILLARS.map(p => [p.id, getBenchmarks(p, useUKBenchmarks).benchmarkMid]))
+                      : Object.fromEntries(METRICS.map(m => [m.id, getBenchmarks(m, useUKBenchmarks).benchmarkMid]))
+                    );
+                    const topScore = tableScore(t.id, t.id === "the"
+                      ? Object.fromEntries(PILLARS.map(p => [p.id, getBenchmarks(p, useUKBenchmarks).benchmarkTop]))
+                      : Object.fromEntries(METRICS.map(m => [m.id, getBenchmarks(m, useUKBenchmarks).benchmarkTop]))
+                    );
                     const gap = score !== null && benchScore !== null ? (score - benchScore).toFixed(1) : null;
                     return (
                       <div key={t.id} style={{ background: "#fff", border: `2px solid ${t.color}33`, borderRadius: 12, padding: "18px 16px", textAlign: "center" }}>
