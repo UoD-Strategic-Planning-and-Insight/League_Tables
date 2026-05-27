@@ -309,7 +309,7 @@ function GapBar({ m, val, benchmarkLow = null, benchmarkMid = null, benchmarkTop
         {[{ n: normLow, label: "Sector low", col: "#f59e0b" }, { n: normMid, label: "Median", col: "#6b6880" }, { n: normTop, label: "Top quartile", col: "#22c55e" }].map(bm => (
           <div key={bm.label} style={{ position: "absolute", left: `${bm.n}%`, top: 0, bottom: 0, width: 2, background: bm.col, transform: "translateX(-50%)", zIndex: 1 }} title={`${bm.label}: ${bm.n?.toFixed(0)}%`} />
         ))}
-        {/* Your score bar */}
+        {/* Dundee's score bar */}
         <div style={{ position: "absolute", left: 0, top: 2, bottom: 2, width: `${norm}%`, background: gapInfo?.color || "#3b82f6", borderRadius: 99, transition: "width 0.5s ease", zIndex: 2 }} />
         {/* Dot */}
         <div style={{ position: "absolute", left: `${norm}%`, top: "50%", width: 14, height: 14, borderRadius: "50%", background: gapInfo?.color || "#3b82f6", border: "2px solid #fff", transform: "translate(-50%, -50%)", zIndex: 3, boxShadow: "0 1px 4px rgba(0,0,0,0.2)" }} />
@@ -462,7 +462,7 @@ export default function App() {
                     ))}
                     <th style={{ padding: "10px 12px", textAlign: "center", ...S.label, borderBottom: "2px solid #e2e0d8", width: 110 }}>Breadth</th>
                     <th style={{ padding: "10px 12px", textAlign: "center", ...S.label, borderBottom: "2px solid #e2e0d8", width: 100 }}>Control</th>
-                    {dataEntered && <th style={{ padding: "10px 12px", textAlign: "center", ...S.label, borderBottom: "2px solid #e2e0d8", width: 110 }}>Your Position</th>}
+                    {dataEntered && <th style={{ padding: "10px 12px", textAlign: "center", ...S.label, borderBottom: "2px solid #e2e0d8", width: 110 }}>Dundee's Position</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -538,7 +538,7 @@ export default function App() {
                 ))}
               </div>
             </div>
-            {!dataEntered && <span style={{ fontSize: 12, color: "#c8a96e", marginTop: 12, display: "inline-block" }}>💡 Enter performance data to see your position in the final column</span>}
+            {!dataEntered && <span style={{ fontSize: 12, color: "#c8a96e", marginTop: 12, display: "inline-block" }}>💡 Enter performance data to see Dundee's position in the final column</span>}
           </div>
         )}
 
@@ -551,7 +551,7 @@ export default function App() {
               <h2 style={{ margin: "0 0 8px", fontSize: 20 }}>Strategic Lever Prioritisation Matrix</h2>
               <p style={{ margin: 0, fontSize: 14, color: "#6b6880", lineHeight: 1.6 }}>
                 Metrics plotted by <strong>institutional controllability</strong> (x-axis) vs <strong>cross-table influence</strong> (y-axis). Bubble size = number of tables. <strong>Top-right = highest-priority levers.</strong>
-                {dataEntered && " Colour fill shows your current sector position."}
+                {dataEntered && " Colour fill shows Dundee's current sector position."}
               </p>
             </div>
             <div style={{ position: "relative", background: "#fff", border: "1px solid #e2e0d8", borderRadius: 8, padding: 24 }}>
@@ -584,7 +584,7 @@ export default function App() {
                   return (
                     <div key={m.id}
                       onClick={() => { setSelectedMetric(m.id); setView("detail"); }}
-                      title={`${m.label}\nControl: ${m.controllability}%\nAvg weight: ${avgW.toFixed(0)}%\n${tableCount} tables\nData source: ${m.dataSource}${gapInfo ? "\nYour position: " + gapInfo.label : ""}`}
+                      title={`${m.label}\nControl: ${m.controllability}%\nAvg weight: ${avgW.toFixed(0)}%\n${tableCount} tables\nData source: ${m.dataSource}${gapInfo ? "\nDundee's position: " + gapInfo.label : ""}`}
                       style={{ position: "absolute", left: `${xPct}%`, top: `${yPct}%`, width: r * 2, height: r * 2, borderRadius: "50%", background: bubbleFill, border: `2px solid ${bubbleBorder}`, transform: "translate(-50%,-50%)", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2, transition: "all 0.15s" }}
                       onMouseEnter={e => { e.currentTarget.style.zIndex = 10; e.currentTarget.style.background = bubbleBorder + "66"; }}
                       onMouseLeave={e => { e.currentTarget.style.zIndex = 2; e.currentTarget.style.background = bubbleFill; }}>
@@ -661,9 +661,9 @@ export default function App() {
         {view === "data" && (
           <div>
             <div style={S.section}>
-              <h2 style={{ margin: "0 0 8px", fontSize: 20 }}>Enter Your Institution's Performance Data</h2>
+              <h2 style={{ margin: "0 0 8px", fontSize: 20 }}>Enter Dundee's Performance Data</h2>
               <p style={{ margin: 0, fontSize: 14, color: "#6b6880", lineHeight: 1.6 }}>
-                Enter your most recent published figures. Leave blank if data is unavailable — the tool will work with partial data. Values are benchmarked against indicative quartiles for global top-500 institutions.
+                Enter Dundee's most recent published figures. Leave blank if data is unavailable — the tool will work with partial data. Values are benchmarked against indicative quartiles for global top-500 institutions.
               </p>
             </div>
 
@@ -752,7 +752,7 @@ export default function App() {
 
             {dataEntered && (
               <div style={{ marginTop: 24, background: "#1a1a2e", borderRadius: 10, padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ color: "#f8f7f4", fontSize: 14 }}>Data entered — head to <strong style={{ color: "#c8a96e" }}>Gap Analysis</strong> to see your strategic picture</div>
+                <div style={{ color: "#f8f7f4", fontSize: 14 }}>Data entered — head to <strong style={{ color: "#c8a96e" }}>Gap Analysis</strong> to see Dundee's strategic picture</div>
                 <button onClick={() => setView("gap")} style={{ background: "#c8a96e", color: "#1a1a2e", border: "none", borderRadius: 8, padding: "10px 20px", fontSize: 14, fontWeight: 700, fontFamily: "inherit", cursor: "pointer" }}>
                   View Gap Analysis →
                 </button>
@@ -769,7 +769,7 @@ export default function App() {
             <div style={S.section}>
               <h2 style={{ margin: "0 0 8px", fontSize: 20 }}>Gap Analysis & Ranking Score Simulation</h2>
               <p style={{ margin: 0, fontSize: 14, color: "#6b6880", lineHeight: 1.6 }}>
-                Your performance benchmarked against sector quartiles, weighted by each table's methodology. Scores are normalised — they indicate relative positioning, not actual published scores.
+                Dundee's performance benchmarked against sector quartiles, weighted by each table's methodology. Scores are normalised — they indicate relative positioning, not actual published scores.
               </p>
             </div>
 
@@ -883,7 +883,7 @@ export default function App() {
                       <table style={{ borderCollapse: "collapse", width: "100%", fontSize: 13 }}>
                         <thead>
                           <tr style={{ background: "#1a1a2e" }}>
-                            {["Metric", "Your Score", "Sector Median", "Gap to Median", "Gap to Top", "Tables Affected", "Control", "Priority"].map(h => (
+                            {["Metric", "Dundee's Score", "Sector Median", "Gap to Median", "Gap to Top", "Tables Affected", "Control", "Priority"].map(h => (
                               <th key={h} style={{ padding: "12px 14px", textAlign: "left", fontSize: 11, letterSpacing: 1, textTransform: "uppercase", color: "#c8a96e", fontWeight: 600, whiteSpace: "nowrap" }}>{h}</th>
                             ))}
                           </tr>
@@ -966,7 +966,7 @@ export default function App() {
           <div>
             <div style={S.section}>
               <h2 style={{ margin: "0 0 8px", fontSize: 20 }}>Metric Explorer</h2>
-              <p style={{ margin: 0, fontSize: 14, color: "#6b6880" }}>Select a metric to see how it feeds into each table, your current position, and strategic guidance.</p>
+              <p style={{ margin: 0, fontSize: 14, color: "#6b6880" }}>Select a metric to see how it feeds into each table, Dundee's current position, and strategic guidance.</p>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))", gap: 8, marginBottom: 28 }}>
               {METRICS.map(m => {
@@ -1018,8 +1018,8 @@ export default function App() {
                         { label: "Tables Using Metric",   value: `${impacts.length} of ${TABLES.length}`, color: "#1a1a2e", bg: "#f0ede6" },
                         { label: "Strategic Priority",    value: `${priority}/${maxPriority}`, color: "#7b2d8b", bg: "#f5f0ff" },
                         gapInfo
-                          ? { label: "Your Sector Position", value: gapInfo.label, color: gapInfo.color, bg: gapInfo.bg }
-                          : { label: "Your Score", value: "—", color: "#9ca3af", bg: "#f8f7f4" },
+                          ? { label: "Dundee's Sector Position", value: gapInfo.label, color: gapInfo.color, bg: gapInfo.bg }
+                          : { label: "Dundee's Score", value: "—", color: "#9ca3af", bg: "#f8f7f4" },
                       ].map(s => (
                         <div key={s.label} style={{ background: s.bg, borderRadius: 10, padding: "14px 16px" }}>
                           <div style={{ fontSize: 11, color: "#6b6880", marginBottom: 4, textTransform: "uppercase", letterSpacing: 1 }}>{s.label}</div>
@@ -1057,13 +1057,13 @@ export default function App() {
                       </div>
                     )}
 
-                    {/* Your score vs benchmarks */}
+                    {/* Dundee's score vs benchmarks */}
                     {dataEntered && (
                       <div style={{ marginBottom: 28 }}>
-                        <h4 style={{ margin: "0 0 12px", fontSize: 15 }}>Your position against sector benchmarks</h4>
+                        <h4 style={{ margin: "0 0 12px", fontSize: 15 }}>Dundee's position against sector benchmarks</h4>
                         <div style={{ background: "#f8f7f4", borderRadius: 10, padding: "18px 20px" }}>
                           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12, fontSize: 13 }}>
-                            <span><strong>Your score:</strong> {val !== "" ? `${val}${metric.unit}` : "Not entered"}</span>
+                            <span><strong>Dundee's score:</strong> {val !== "" ? `${val}${metric.unit}` : "Not entered"}</span>
                             <span style={{ color: "#f59e0b" }}>Sector low: {getBenchmarks(metric, useUKBenchmarks).benchmarkLow}{metric.unit}</span>
                             <span>Median: {getBenchmarks(metric, useUKBenchmarks).benchmarkMid}{metric.unit}</span>
                             <span style={{ color: "#22c55e" }}>Top quartile: {getBenchmarks(metric, useUKBenchmarks).benchmarkTop}{metric.unit}</span>
@@ -1125,12 +1125,12 @@ export default function App() {
                         {impacts.length === 2 && metric.controllability >= 65 && <span><strong>High-priority lever.</strong> This metric is used by both QS and THE and sits firmly within institutional control. A sustained improvement programme will yield ranking benefits across both indices. Establish a dedicated workstream with clear ownership and 12-month milestones.</span>}
                         {impacts.length === 2 && metric.controllability < 65 && metric.controllability >= 45 && <span><strong>Monitor and invest strategically.</strong> This metric contributes to both rankings but controllability is moderate — improvement requires multi-year commitment. Build pipeline interventions now; results materialise over 2–3 publication cycles.</span>}
                         {impacts.length === 2 && metric.controllability < 45 && <span><strong>Structural challenge.</strong> Used by both rankings but limited short-term controllability. Focus on root-cause analysis, peer benchmarking, and setting realistic multi-year targets rather than expecting rapid gains.</span>}
-                        {impacts.length === 1 && metric.controllability >= 60 && <span><strong>Targeted single-ranking lever.</strong> This metric is specific to {impacts[0]?.table.label}. Highly controllable — prioritise if that ranking is strategically important for your institution's international profile.</span>}
+                        {impacts.length === 1 && metric.controllability >= 60 && <span><strong>Targeted single-ranking lever.</strong> This metric is specific to {impacts[0]?.table.label}. Highly controllable — prioritise if that ranking is strategically important for the institution's international profile.</span>}
                         {impacts.length === 1 && metric.controllability < 60 && <span><strong>Ranking-specific, longer-horizon lever.</strong> Unique to {impacts[0]?.table.label} and only moderately controllable. Consider as part of a broader research or internationalisation strategy rather than a quick-win intervention.</span>}
                         {gapInfo && val !== "" && (
                           <span> <br /><br /><strong>Current position:</strong> {gapInfo.label.toLowerCase()}.{" "}
-                            {gapInfo.label === "Bottom quartile" && "Urgent attention recommended — this is likely dragging your composite score below sector norms."}
-                            {gapInfo.label === "Below median" && "Meaningful improvement is achievable and would move your composite score into a more competitive position."}
+                            {gapInfo.label === "Bottom quartile" && "Urgent attention recommended — this is likely dragging Dundee's composite score below sector norms."}
+                            {gapInfo.label === "Below median" && "Meaningful improvement is achievable and would move Dundee's composite score into a more competitive position."}
                             {gapInfo.label === "Above median" && "Solid position. Maintaining momentum and targeting the top quartile threshold would further strengthen rankings."}
                             {gapInfo.label === "Top quartile" && "Strong position. Protect this and use it as an institutional narrative strength in marketing and strategy communications."}
                           </span>
